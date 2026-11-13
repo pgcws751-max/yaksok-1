@@ -1,0 +1,71 @@
+const PATHS = {
+  check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
+  back: <path d="M15 5l-7 7 7 7" />,
+  minus: <path d="M5 12h14" />,
+  plus: <path d="M5 12h14M12 5v14" />,
+  bell: (
+    <>
+      <path d="M6 17V11a6 6 0 1112 0v6l1.5 2h-15z" />
+      <path d="M10 21h4" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="M3 11l9-7 9 7" />
+      <path d="M5 10v10h14V10" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M8 3v4M16 3v4M4 10h16" />
+    </>
+  ),
+  pill: (
+    <g transform="rotate(-45 12 12)">
+      <rect x="3" y="8.5" width="18" height="7" rx="3.5" />
+      <path d="M12 8.5v7" />
+    </g>
+  ),
+  sunrise: (
+    <>
+      <path d="M3 18h18" />
+      <path d="M7 18a5 5 0 0110 0" />
+      <path d="M12 6v3M4.5 10.5l2 2M19.5 10.5l-2 2" />
+    </>
+  ),
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4" />
+    </>
+  ),
+  moon: <path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" />,
+};
+
+const BOLD = new Set(['check', 'minus', 'plus']);
+
+export default function Icon({ name, size = 24, color = 'currentColor', strokeWidth, style }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={strokeWidth ?? (BOLD.has(name) ? 3 : 2.3)}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={style}
+    >
+      {PATHS[name]}
+    </svg>
+  );
+}
