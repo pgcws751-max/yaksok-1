@@ -1,0 +1,40 @@
+import Icon from '../../components/Icon.jsx';
+import TabBar from '../../components/TabBar.jsx';
+import { MenuRow } from '../../components/ui.jsx';
+import { navigate } from '../../router.js';
+
+export default function Settings({ ctx }) {
+  const { user, data } = ctx;
+  const s = data.settings;
+  return (
+    <main className="screen">
+      <header className="top">
+        <h1 className="title">설정</h1>
+      </header>
+
+      <section className="card profile-card">
+        <span className="avatar">
+          <Icon name="user" size={34} strokeWidth={2.2} />
+        </span>
+        <div>
+          <b>{user.name}님</b>
+          <span>{user.username}</span>
+        </div>
+      </section>
+
+      <div className="menu-group">
+        <MenuRow
+          icon="bell"
+          title="알림 설정"
+          desc={s.notify ? `켜짐${s.remind ? ` · 안 드시면 ${s.remindMinutes}분 뒤 다시` : ''}` : '꺼짐'}
+          onClick={() => navigate('/settings/notify')}
+        />
+        <MenuRow icon="user" title="내 정보" desc="정보 수정, 비밀번호 변경" onClick={() => navigate('/settings/profile')} />
+        <MenuRow icon="door" title="계정" desc="로그아웃, 회원탈퇴" onClick={() => navigate('/settings/account')} />
+      </div>
+
+      <p className="foot-note">약속 v1.0 · 데이터는 이 기기에 저장돼요</p>
+      <TabBar current="settings" />
+    </main>
+  );
+}

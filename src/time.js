@@ -16,7 +16,7 @@ export function splitTime(minutes) {
 
 // "30분 뒤", "1시간 10분 뒤"
 export function formatUntil(diff) {
-  if (diff <= 0) return '지금';
+  if (diff <= 0) return '지금 드실 시간';
   const h = Math.floor(diff / 60);
   const m = diff % 60;
   if (h && m) return `${h}시간 ${m}분 뒤`;
@@ -24,8 +24,19 @@ export function formatUntil(diff) {
   return `${m}분 뒤`;
 }
 
-export function pillSummary(pills) {
-  return pills.map((p) => `${p.name} ${p.count}알`).join(' · ');
+// 시각에 맞는 시간대 이름과 아이콘
+export function slotLabel(minutes) {
+  const h = Math.floor(minutes / 60);
+  if (h < 5) return { label: '새벽', icon: 'moon' };
+  if (h < 11) return { label: '아침', icon: 'sunrise' };
+  if (h < 14) return { label: '점심', icon: 'sun' };
+  if (h < 17) return { label: '오후', icon: 'sun' };
+  if (h < 21) return { label: '저녁', icon: 'moon' };
+  return { label: '자기 전', icon: 'moon' };
 }
 
-export const TODAY_LABEL = '11월 13일 금요일';
+export const MEAL_TEXT = { before: '식전', after: '식후', any: '' };
+
+export function doseText(med) {
+  return `${med.name} ${med.dose}`;
+}

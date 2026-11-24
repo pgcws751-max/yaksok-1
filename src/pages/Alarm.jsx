@@ -1,15 +1,20 @@
 import Icon from '../components/Icon.jsx';
-import { GUARDIAN_NOTICE_MINUTES, SNOOZE_MINUTES } from '../data.js';
-import { splitTime } from '../time.js';
+import { slotsOn } from '../lib/schedule.js';
+import { navigate } from '../router.js';
+import { MEAL_TEXT, splitTime } from '../time.js';
 
-export default function Alarm({ slot, onTake, onSnooze, onClose }) {
-  if (!slot) {
+export default function Alarm({ ctx, minutes }) {
+  const { data, today, takeSlot, snooze } = ctx;
+  const slot = slotsOn(data.meds, data.logs, today).find((s) => s.minutes === minutes);
+  const home = () => navigate('/home', { replace: true });
+
+  if (!slot || slot.taken) {
     return (
       <main className="alarm">
-        <div className="done-msg">오늘 드실 약이 더 없어요</div>
+        <div className="done-msg">{slot ? '이 시간 약은 이미 드셨어요' : '이 시간에 드실 약이 없어요'}</div>
         <div className="actions">
-          <button type="button" className="btn-big" onClick={onClose}>
-            돌아가기
+          <button type="button" className="btn-big" onClick={home}>
+            홈으로
           </button>
         </div>
       </main>
@@ -17,6 +22,9 @@ export default function Alarm({ slot, onTake, onSnooze, onClose }) {
   }
 
   const { period, clock } = splitTime(slot.minutes);
+  const todo = slot.items.filter((i) => !i.taken);
+  const memos = todo.map((i) => i.med.memo).filter(Boolean);
+  const meals = [...new Set(todo.map((i) => MEAL_TEXT[i.med.meal]).filter(Boolean))];
 
   return (
     <main className="alarm" role="alertdialog" aria-labelledby="alarm-title">
@@ -31,32 +39,44 @@ export default function Alarm({ slot, onTake, onSnooze, onClose }) {
       </div>
 
       <section className="meds" aria-label="지금 드실 약">
-        <div className="k">지금 드실 약</div>
-        {slot.pills.map((p) => (
-          <div className="med" key={p.name}>
+        <div className="k">지금 드실 약{meals.length > 0 && ` · ${meals.join('/')}`}</div>
+        {todo.map((i) => (
+          <div className="med" key={i.key}>
             <span className="ic">
               <Icon name="pill" size={26} strokeWidth={2.4} />
             </span>
-            <span className="n">{p.name}</span>
-            <span className="c">{p.count}알</span>
+            <span className="n">{i.med.name}</span>
+            <span className="c">{i.med.dose}</span>
           </div>
         ))}
-        {slot.note && <div className="note">{slot.note}</div>}
+        {memos.length > 0 && <div className="note">{memos.join(' · ')}</div>}
       </section>
 
       <div className="actions">
-        <button type="button" className="btn-big" onClick={() => onTake(slot.id)}>
+        <button
+          type="button"
+          className="btn-big"
+          onClick={() => {
+            takeSlot(slot.minutes);
+            home();
+          }}
+        >
           <Icon name="check" size={36} />
           먹었어요
         </button>
-        <button type="button" className="btn-ghost-light" onClick={onSnooze}>
-          {SNOOZE_MINUTES}분 뒤에 다시 알려주세요
+        <button
+          type="button"
+          className="btn-ghost-light"
+          onClick={() => {
+            snooze(slot.minutes);
+            home();
+          }}
+        >
+          {data.settings.remindMinutes}분 뒤에 다시 알려주세요
         </button>
-        <p className="guard" style={{ margin: 0 }}>
-          {GUARDIAN_NOTICE_MINUTES}분 안에 누르지 않으면
-          <br />
-          보호자께 알려드려요
-        </p>
+        <button type="button" className="btn-text light" onClick={home}>
+          닫기
+        </button>
       </div>
     </main>
   );
