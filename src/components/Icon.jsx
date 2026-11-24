@@ -47,6 +47,32 @@ const PATHS = {
     </>
   ),
   moon: <path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" />,
+  chevron: <path d="M9 5l7 7-7 7" />,
+  close: <path d="M6 6l12 12M18 6L6 18" />,
+  gear: (
+    <>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7" />
+    </>
+  ),
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0116 0" />
+    </>
+  ),
+  door: (
+    <>
+      <path d="M14 4H6v16h8" />
+      <path d="M11 12h10M17 8l4 4-4 4" />
+    </>
+  ),
+  chart: (
+    <>
+      <path d="M4 20V4M4 20h16" />
+      <path d="M8 16v-4M12 16V8M16 16v-6" />
+    </>
+  ),
 };
 
 const BOLD = new Set(['check', 'minus', 'plus']);
