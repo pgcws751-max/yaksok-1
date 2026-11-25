@@ -101,6 +101,18 @@ export default function App() {
     [today, update],
   );
 
+  // 약 하나만 먹은 것으로 기록
+  const takeDose = useCallback(
+    (doseKeyStr, keyOfDay = today) => {
+      update((d) => {
+        const day = { ...(d.logs[keyOfDay] || {}) };
+        if (!day[doseKeyStr]) day[doseKeyStr] = new Date().toISOString();
+        return { ...d, logs: { ...d.logs, [keyOfDay]: day } };
+      });
+    },
+    [today, update],
+  );
+
   // 기록 취소 (잘못 눌렀을 때)
   const untakeDose = useCallback(
     (doseKeyStr, keyOfDay = today) => {
@@ -157,6 +169,7 @@ export default function App() {
     today,
     now,
     takeSlot,
+    takeDose,
     untakeDose,
     toast: setToast,
     snooze: (minutes) => {

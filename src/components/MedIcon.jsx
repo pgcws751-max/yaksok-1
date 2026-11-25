@@ -2,12 +2,12 @@ import Icon from './Icon.jsx';
 
 // 약마다 다른 색을 줘서 한눈에 구분되게 합니다. (약 id로 색을 고르므로 늘 같은 색)
 const PALETTE = [
-  { fg: '#12805C', bg: '#E4F4EC' },
-  { fg: '#2F6FE4', bg: '#E6EEFD' },
-  { fg: '#D9811A', bg: '#FDF1E2' },
-  { fg: '#C2417B', bg: '#FBE8F0' },
-  { fg: '#7A4FD6', bg: '#EFE9FC' },
-  { fg: '#0E8FA6', bg: '#E1F4F7' },
+  { fg: '#F08A24', bg: '#FFF0E0' },
+  { fg: '#3182F6', bg: '#E8F3FF' },
+  { fg: '#08875A', bg: '#E3F6EC' },
+  { fg: '#E5527A', bg: '#FFEBF1' },
+  { fg: '#7B61FF', bg: '#F0EDFF' },
+  { fg: '#0CA5B5', bg: '#E0F6F8' },
 ];
 
 export function medColor(med) {
