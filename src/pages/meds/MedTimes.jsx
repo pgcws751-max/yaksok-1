@@ -67,17 +67,17 @@ export default function MedTimes({ ctx, id }) {
           return (
             <section key={idx} className="card set" aria-label={`${idx + 1}번째 시간`}>
               <div className="set-head">
-                <Icon name={icon} size={30} color={ICON_COLOR[icon]} strokeWidth={2.2} />
+                <Icon name={icon} size={22} color={ICON_COLOR[icon]} strokeWidth={2.2} />
                 <span className="label">{label}</span>
                 <span className="set-no">{idx + 1}번째</span>
               </div>
               <div className="stepper">
                 <button type="button" className="round" aria-label={`${STEP}분 빠르게`} onClick={() => shift(idx, -STEP)}>
-                  <Icon name="minus" size={26} />
+                  <Icon name="minus" size={20} />
                 </button>
                 <output aria-live="polite">{formatTime(t)}</output>
                 <button type="button" className="round" aria-label={`${STEP}분 늦게`} onClick={() => shift(idx, STEP)}>
-                  <Icon name="plus" size={26} />
+                  <Icon name="plus" size={20} />
                 </button>
               </div>
             </section>

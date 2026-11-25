@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Icon from '../components/Icon.jsx';
+import { medColor } from '../components/MedIcon.jsx';
 import TabBar from '../components/TabBar.jsx';
 import { WEEKDAYS, addDays, dateLabel, monthEnd, monthStart, parseKey, shortLabel, weekStart, weekdayOf } from '../lib/date.js';
 import { dayStatus, doseKey, rateBetween, slotsOn } from '../lib/schedule.js';
@@ -17,7 +18,7 @@ const STATUS_TEXT = {
 function Mark({ status, day }) {
   return (
     <span className={`mark ${status}`} aria-hidden="true">
-      {status === 'done' ? <Icon name="check" size={20} /> : status === 'partial' || status === 'missed' ? '!' : day}
+      {status === 'done' ? <Icon name="check" size={16} /> : status === 'partial' || status === 'missed' ? '!' : day}
     </span>
   );
 }
@@ -48,13 +49,13 @@ function Calendar({ ctx }) {
       <section className="card cal" aria-label="복용 달력">
         <div className="cal-head">
           <button type="button" className="round sm" aria-label="이전 달" onClick={() => moveMonth(-1)}>
-            <Icon name="back" size={22} strokeWidth={2.8} />
+            <Icon name="back" size={18} strokeWidth={2.8} />
           </button>
           <b>
             {d.getFullYear()}년 {d.getMonth() + 1}월
           </b>
           <button type="button" className="round sm" aria-label="다음 달" onClick={() => moveMonth(1)}>
-            <Icon name="chevron" size={22} strokeWidth={2.8} />
+            <Icon name="chevron" size={18} strokeWidth={2.8} />
           </button>
         </div>
         <div className="cal-grid">
@@ -82,9 +83,10 @@ function Calendar({ ctx }) {
             );
           })}
         </div>
-        <div className="legend row">
+        <div className="legend">
           <div><i className="f" />모두 드심</div>
-          <div><i className="o" />놓친 약 있음</div>
+          <div><i className="o" />일부 놓침</div>
+          <div><i className="x" />못 드심</div>
         </div>
         {rate.percent != null && (
           <p className="cal-rate">
@@ -108,7 +110,7 @@ function Calendar({ ctx }) {
                   <span className="time">{formatTime(s.minutes)}</span>
                   {s.taken ? (
                     <span className="state ok">
-                      <Icon name="check" size={22} />
+                      <Icon name="check" size={18} />
                       드셨어요
                     </span>
                   ) : isFuture ? (
@@ -125,6 +127,7 @@ function Calendar({ ctx }) {
                 <div className="slot-meds">
                   {s.items.map((i) => (
                     <span key={i.key} className={i.taken ? 'is-taken' : ''}>
+                      {i.taken ? <Icon name="check" size={12} strokeWidth={3} /> : <i style={{ background: medColor(i.med).fg }} />}
                       {i.med.name} {i.med.dose}
                       {i.taken && (
                         <>
@@ -137,7 +140,7 @@ function Calendar({ ctx }) {
                               if (window.confirm(`${i.med.name} 복용 기록을 취소할까요?`)) untakeDose(doseKey(i.med.id, s.minutes), selected);
                             }}
                           >
-                            <Icon name="close" size={16} strokeWidth={3} />
+                            <Icon name="close" size={12} strokeWidth={3} />
                           </button>
                         </>
                       )}
@@ -198,9 +201,9 @@ function Rates({ ctx }) {
 
   return (
     <>
-      <div className="seg" role="group" aria-label="기간" style={{ marginTop: 16 }}>
-        <button type="button" aria-pressed={mode === 'week'} onClick={() => setMode('week')}>이번 주</button>
-        <button type="button" aria-pressed={mode === 'month'} onClick={() => setMode('month')}>이번 달</button>
+      <div className="chips pad" role="group" aria-label="기간" style={{ marginTop: 16 }}>
+        <button type="button" className={`chip-opt ${mode === 'week' ? 'is-on' : ''}`} aria-pressed={mode === 'week'} onClick={() => setMode('week')}>이번 주</button>
+        <button type="button" className={`chip-opt ${mode === 'month' ? 'is-on' : ''}`} aria-pressed={mode === 'month'} onClick={() => setMode('month')}>이번 달</button>
       </div>
 
       <section className="summary" aria-label="복용률 요약">
@@ -239,12 +242,12 @@ export default function History({ ctx }) {
       <header className="top">
         <h1 className="title">복용이력</h1>
       </header>
-      <div className="tabs-inline" role="tablist">
-        <button type="button" role="tab" aria-selected={tab === 'calendar'} onClick={() => setTab('calendar')}>
-          <Icon name="calendar" size={22} /> 달력
+      <div className="seg tabs-inline" role="group" aria-label="보기 방식">
+        <button type="button" aria-pressed={tab === 'calendar'} onClick={() => setTab('calendar')}>
+          달력
         </button>
-        <button type="button" role="tab" aria-selected={tab === 'rate'} onClick={() => setTab('rate')}>
-          <Icon name="chart" size={22} /> 복용률
+        <button type="button" aria-pressed={tab === 'rate'} onClick={() => setTab('rate')}>
+          복용률
         </button>
       </div>
       {tab === 'calendar' ? <Calendar ctx={ctx} /> : <Rates ctx={ctx} />}

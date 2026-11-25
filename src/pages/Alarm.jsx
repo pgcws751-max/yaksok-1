@@ -1,4 +1,5 @@
 import Icon from '../components/Icon.jsx';
+import MedIcon from '../components/MedIcon.jsx';
 import { slotsOn } from '../lib/schedule.js';
 import { navigate } from '../router.js';
 import { MEAL_TEXT, splitTime } from '../time.js';
@@ -29,7 +30,7 @@ export default function Alarm({ ctx, minutes }) {
   return (
     <main className="alarm" role="alertdialog" aria-labelledby="alarm-title">
       <div className="chip" id="alarm-title">
-        <Icon name="bell" size={26} strokeWidth={2.4} />
+        <Icon name="bell" size={20} strokeWidth={2.4} />
         {slot.label} 약 드실 시간
       </div>
 
@@ -42,9 +43,7 @@ export default function Alarm({ ctx, minutes }) {
         <div className="k">지금 드실 약{meals.length > 0 && ` · ${meals.join('/')}`}</div>
         {todo.map((i) => (
           <div className="med" key={i.key}>
-            <span className="ic">
-              <Icon name="pill" size={26} strokeWidth={2.4} />
-            </span>
+            <MedIcon med={i.med} />
             <span className="n">{i.med.name}</span>
             <span className="c">{i.med.dose}</span>
           </div>
@@ -61,7 +60,7 @@ export default function Alarm({ ctx, minutes }) {
             home();
           }}
         >
-          <Icon name="check" size={36} />
+          <Icon name="check" size={24} />
           먹었어요
         </button>
         <button

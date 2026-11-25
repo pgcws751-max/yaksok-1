@@ -19,7 +19,7 @@ export default function TabBar({ current }) {
           aria-current={current === t.id ? 'page' : undefined}
           onClick={() => navigate(t.path)}
         >
-          <Icon name={t.icon} size={28} strokeWidth={2.2} />
+          <Icon name={t.icon} size={24} strokeWidth={t.id === current ? 2.4 : 2} />
           {t.label}
         </button>
       ))}
