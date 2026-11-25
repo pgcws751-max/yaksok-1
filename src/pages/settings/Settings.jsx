@@ -1,7 +1,7 @@
-import Icon from '../../components/Icon.jsx';
 import TabBar from '../../components/TabBar.jsx';
 import { MenuRow } from '../../components/ui.jsx';
 import { navigate } from '../../router.js';
+import { FONT_LABEL, fontSize } from '../../lib/fontSize.js';
 
 export default function Settings({ ctx }) {
   const { user, data } = ctx;
@@ -14,7 +14,7 @@ export default function Settings({ ctx }) {
 
       <section className="card profile-card">
         <span className="avatar">
-          <Icon name="user" size={34} strokeWidth={2.2} />
+          {user.name.slice(0, 1)}
         </span>
         <div>
           <b>{user.name}님</b>
@@ -29,6 +29,7 @@ export default function Settings({ ctx }) {
           desc={s.notify ? `켜짐${s.remind ? ` · 안 드시면 ${s.remindMinutes}분 뒤 다시` : ''}` : '꺼짐'}
           onClick={() => navigate('/settings/notify')}
         />
+        <MenuRow icon="text" title="글자 크기" desc={FONT_LABEL[fontSize()] || '보통'} onClick={() => navigate('/settings/display')} />
         <MenuRow icon="user" title="내 정보" desc="정보 수정, 비밀번호 변경" onClick={() => navigate('/settings/profile')} />
         <MenuRow icon="door" title="계정" desc="로그아웃, 회원탈퇴" onClick={() => navigate('/settings/account')} />
       </div>

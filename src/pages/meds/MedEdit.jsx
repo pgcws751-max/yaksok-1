@@ -103,7 +103,7 @@ export default function MedEdit({ ctx, id }) {
       </form>
 
       {existing && (
-        <div className="menu-group" style={{ marginTop: 0 }}>
+        <div className="menu-group plain" style={{ marginTop: 0 }}>
           <MenuRow
             icon="clock"
             title="복용시간 설정"

@@ -27,7 +27,7 @@ export default function NotifySettings({ ctx }) {
       <div className="set-list">
         <section className="card set">
           <div className="set-head">
-            <span className="label" style={{ fontSize: 24 }}>복용 알림</span>
+            <span className="label">복용 알림</span>
             <Toggle on={s.notify} onChange={turnOn} labelOn="켜짐" labelOff="꺼짐" label="복용 알림" />
           </div>
           <p className="set-desc">약마다 정한 복용시간에 알려 드려요</p>
@@ -35,7 +35,7 @@ export default function NotifySettings({ ctx }) {
 
         <section className={`card set ${s.notify ? '' : 'is-off'}`}>
           <div className="set-head">
-            <span className="label" style={{ fontSize: 24 }}>다시 알림</span>
+            <span className="label">다시 알림</span>
             <Toggle on={s.remind && s.notify} onChange={(on) => set({ remind: on })} label="미복용 시 다시 알림" />
           </div>
           <p className="set-desc">'먹었어요'를 누르지 않으면 한 번 더 알려 드려요</p>
@@ -53,7 +53,7 @@ export default function NotifySettings({ ctx }) {
 
       <div className={`notice ${perm === 'granted' ? 'ok' : ''}`}>{PERM_TEXT[perm] || PERM_TEXT.default}</div>
 
-      <div className="pad" style={{ display: 'grid', gap: 12, padding: '16px 24px 28px' }}>
+      <div className="pad" style={{ display: 'grid', gap: 12, padding: '16px 20px 28px' }}>
         {perm === 'default' && (
           <button type="button" className="btn-primary" onClick={async () => setPerm(await requestNotify())}>
             알림 허용하기

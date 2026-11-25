@@ -1,4 +1,5 @@
 import Icon from '../components/Icon.jsx';
+import { medColor } from '../components/MedIcon.jsx';
 import TabBar from '../components/TabBar.jsx';
 import { dateLabel } from '../lib/date.js';
 import { slotsOn } from '../lib/schedule.js';
@@ -35,7 +36,7 @@ export default function Home({ ctx }) {
           <div className="name">먼저 드시는 약을 등록해 주세요</div>
           <div className="pills">시간이 되면 알려 드릴게요</div>
           <button type="button" className="btn-white" onClick={() => navigate('/meds/new')}>
-            <Icon name="plus" size={28} />
+            <Icon name="plus" size={22} />
             약 등록하기
           </button>
         </section>
@@ -46,16 +47,21 @@ export default function Home({ ctx }) {
         </section>
       ) : (
         <>
-          <section className="card progress" aria-label="오늘 복용 현황">
-            <strong>
-              오늘 {doses.length}번 중 {takenCount}번
-            </strong>
-            <div className="dots" aria-hidden="true">
-              {slots.map((s) => (
-                <span key={s.minutes} className={`dot ${s.taken ? 'done' : 'todo'}`}>
-                  {s.taken && <Icon name="check" size={18} />}
-                </span>
-              ))}
+          <section className="card progress" aria-label="오늘 복용 현황" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <strong>
+                오늘 <b>{takenCount}</b> / {doses.length}번 드셨어요
+              </strong>
+              <div className="dots" aria-hidden="true">
+                {slots.map((s) => (
+                  <span key={s.minutes} className={`dot ${s.taken ? 'done' : 'todo'}`}>
+                    {s.taken && <Icon name="check" size={12} />}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="progress-bar" aria-hidden="true">
+              <span style={{ width: `${doses.length ? (takenCount / doses.length) * 100 : 0}%` }} />
             </div>
           </section>
 
@@ -71,7 +77,7 @@ export default function Home({ ctx }) {
                 {nextMeals.length > 0 && ` (${nextMeals.join('/')})`}
               </div>
               <button type="button" className="btn-white" onClick={() => takeSlot(next.minutes)}>
-                <Icon name="check" size={30} />
+                <Icon name="check" size={22} />
                 먹었어요
               </button>
             </section>
@@ -94,7 +100,7 @@ export default function Home({ ctx }) {
                     <span className="time">{formatTime(s.minutes)}</span>
                     {s.taken ? (
                       <span className="state ok">
-                        <Icon name="check" size={22} />
+                        <Icon name="check" size={18} />
                         먹었어요
                       </span>
                     ) : isNext ? (
@@ -110,6 +116,7 @@ export default function Home({ ctx }) {
                   <div className="slot-meds">
                     {s.items.map((i) => (
                       <span key={i.key} className={i.taken ? 'is-taken' : ''}>
+                        {i.taken ? <Icon name="check" size={12} strokeWidth={3} /> : <i style={{ background: medColor(i.med).fg }} />}
                         {i.med.name} {i.med.dose}
                         {i.taken && (
                           <button
@@ -120,7 +127,7 @@ export default function Home({ ctx }) {
                               if (window.confirm(`${s.label} ${i.med.name} 복용 기록을 취소할까요?`)) untakeDose(i.key);
                             }}
                           >
-                            <Icon name="close" size={16} strokeWidth={3} />
+                            <Icon name="close" size={12} strokeWidth={3} />
                           </button>
                         )}
                       </span>

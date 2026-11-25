@@ -20,6 +20,7 @@ import Settings from './pages/settings/Settings.jsx';
 import NotifySettings from './pages/settings/NotifySettings.jsx';
 import Profile from './pages/settings/Profile.jsx';
 import Account from './pages/settings/Account.jsx';
+import Display from './pages/settings/Display.jsx';
 
 const AUTH_PATHS = ['/login', '/signup', '/find-id', '/find-password'];
 
@@ -183,6 +184,7 @@ export default function App() {
   else if (path === '/settings/notify') page = <NotifySettings ctx={ctx} />;
   else if (path === '/settings/profile') page = <Profile ctx={ctx} />;
   else if (path === '/settings/account') page = <Account ctx={ctx} />;
+  else if (path === '/settings/display') page = <Display ctx={ctx} />;
   else page = <Home ctx={ctx} />;
 
   return (

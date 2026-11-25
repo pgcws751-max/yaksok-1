@@ -32,7 +32,7 @@ export default function Login({ ctx }) {
     <main className="screen auth">
       <div className="brand">
         <span className="logo">
-          <Icon name="pill" size={40} color="#fff" strokeWidth={2.4} />
+          <Icon name="pill" size={30} color="#fff" strokeWidth={2.4} />
         </span>
         <h1 className="title">약속</h1>
         <p className="sub">약 드실 시간을 챙겨 드려요</p>
@@ -57,7 +57,7 @@ export default function Login({ ctx }) {
         <button type="button" onClick={() => navigate('/find-password')}>비밀번호 찾기</button>
       </div>
 
-      <div className="pad" style={{ display: 'grid', gap: 12, padding: '8px 24px 32px' }}>
+      <div className="pad" style={{ display: 'grid', gap: 12, padding: '8px 20px 32px' }}>
         <button type="button" className="btn-outline" onClick={() => navigate('/signup')}>
           처음이세요? 회원가입
         </button>

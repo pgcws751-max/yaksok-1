@@ -1,4 +1,5 @@
 import Icon from '../../components/Icon.jsx';
+import MedIcon from '../../components/MedIcon.jsx';
 import TabBar from '../../components/TabBar.jsx';
 import { WEEKDAYS, shortLabel } from '../../lib/date.js';
 import { navigate } from '../../router.js';
@@ -33,7 +34,7 @@ export default function MedList({ ctx }) {
 
       <div className="pad" style={{ marginTop: 16 }}>
         <button type="button" className="btn-primary with-icon" onClick={() => navigate('/meds/new')}>
-          <Icon name="plus" size={28} />
+          <Icon name="plus" size={22} />
           약 등록하기
         </button>
       </div>
@@ -47,25 +48,25 @@ export default function MedList({ ctx }) {
             return (
               <li key={m.id}>
                 <button type="button" className={`card med-card ${st.cls === 'end' ? 'is-end' : ''}`} onClick={() => navigate(`/meds/${m.id}`)}>
+                  <MedIcon med={m} size={44} />
+                  <div className="med-card-main">
                   <div className="med-card-head">
-                    <span className="ic">
-                      <Icon name="pill" size={24} strokeWidth={2.4} />
-                    </span>
                     <b>{m.name}</b>
                     <span className="dose">{m.dose}</span>
                     <span className={`badge ${st.cls}`}>{st.text}</span>
                   </div>
                   <div className="med-card-body">
                     <span>
-                      <Icon name="clock" size={20} />
+                      <Icon name="clock" size={16} />
                       {m.times.length ? m.times.map(formatTime).join(', ') : '시간 미정'}
                     </span>
                     <span>
-                      <Icon name="calendar" size={20} />
+                      <Icon name="calendar" size={16} />
                       {daysText(m.days)}
                       {MEAL_TEXT[m.meal] && ` · ${MEAL_TEXT[m.meal]}`}
                       {m.endDate && ` · ${shortLabel(m.endDate)}까지`}
                     </span>
+                  </div>
                   </div>
                 </button>
               </li>

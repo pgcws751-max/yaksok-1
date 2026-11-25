@@ -4,12 +4,12 @@ import { goBack } from '../router.js';
 // 뒤로 버튼 + 제목이 있는 화면 머리
 export function SubHeader({ title, sub, back = '/home' }) {
   return (
-    <header style={{ padding: '20px 24px 0' }}>
+    <header style={{ padding: '16px 20px 0' }}>
       <button type="button" className="back" onClick={() => goBack(back)}>
-        <Icon name="back" size={26} strokeWidth={2.6} />
+        <Icon name="back" size={20} strokeWidth={2.6} />
         뒤로
       </button>
-      <h1 className="title" style={{ marginTop: 6 }}>
+      <h1 className="title" style={{ marginTop: 4 }}>
         {title}
       </h1>
       {sub && <div className="sub">{sub}</div>}
@@ -53,14 +53,14 @@ export function MenuRow({ icon, title, desc, onClick, danger }) {
     <button type="button" className={`menu-row ${danger ? 'danger' : ''}`} onClick={onClick}>
       {icon && (
         <span className="ic">
-          <Icon name={icon} size={26} strokeWidth={2.3} />
+          <Icon name={icon} size={20} strokeWidth={2.3} />
         </span>
       )}
       <span className="txt">
         <b>{title}</b>
         {desc && <span>{desc}</span>}
       </span>
-      <Icon name="chevron" size={24} strokeWidth={2.6} style={{ marginLeft: 'auto', flex: 'none' }} />
+      <Icon name="chevron" size={20} strokeWidth={2.6} style={{ marginLeft: 'auto', flex: 'none' }} />
     </button>
   );
 }
