@@ -74,3 +74,25 @@ export function rateBetween(meds, logs, from, to, todayKey, now) {
   }
   return { due, taken, percent: due ? Math.round((taken / due) * 100) : null };
 }
+
+// 연속으로 약을 모두 드신 날 수 (오늘을 다 드셨으면 오늘 포함, 아니면 어제까지)
+export function streakDays(meds, logs, todayKey, now) {
+  let n = 0;
+  let k = todayKey;
+  const todaySt = dayStatus(meds, logs, todayKey, todayKey, now);
+  if (todaySt !== 'done') k = addDays(todayKey, -1);
+  for (let i = 0; i < 366; i += 1) {
+    const st = dayStatus(meds, logs, k, todayKey, now);
+    if (st === 'done') n += 1;
+    else if (st !== 'none') break;
+    k = addDays(k, -1);
+    if (!meds.some((m) => m.startDate <= k)) break;
+  }
+  return n;
+}
+
+// 기간 안에 놓친 횟수
+export function missedBetween(meds, logs, from, to, todayKey, now) {
+  const r = rateBetween(meds, logs, from, to, todayKey, now);
+  return r.due - r.taken;
+}
