@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import * as api from '../../lib/api.js';
+import { accountLabel, isSocial } from '../../lib/account.js';
 import { ErrorBox, Field, SubHeader } from '../../components/ui.jsx';
 
 function phoneText(p) {
@@ -44,8 +45,8 @@ export default function Profile({ ctx }) {
       <h2 className="section-title">정보 수정</h2>
       <form className="form" style={{ marginTop: 0 }} onSubmit={saveInfo} noValidate>
         <div className="field">
-          <label>아이디</label>
-          <p className="readonly">{user.username}</p>
+          <label>{user.username ? '아이디' : '로그인 방식'}</label>
+          <p className="readonly">{accountLabel(user)}</p>
         </div>
         <Field label="이름" name="name" value={info.name} onChange={(e) => setInfo({ ...info, name: e.target.value })} />
         <Field label="연락처" name="phone" type="tel" inputMode="numeric" value={info.phone} onChange={(e) => setInfo({ ...info, phone: e.target.value })} />
@@ -53,14 +54,14 @@ export default function Profile({ ctx }) {
         <button type="submit" className="btn-primary">정보 저장</button>
       </form>
 
-      <h2 className="section-title">비밀번호 변경</h2>
-      <form className="form" style={{ marginTop: 0, paddingBottom: 28 }} onSubmit={savePw} noValidate>
+      {!isSocial(user) && <h2 className="section-title">비밀번호 변경</h2>}
+      {!isSocial(user) && <form className="form" style={{ marginTop: 0, paddingBottom: 28 }} onSubmit={savePw} noValidate>
         <Field label="지금 비밀번호" name="current" type="password" autoComplete="current-password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} />
         <Field label="새 비밀번호" name="next" type="password" autoComplete="new-password" hint="6자 이상" value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} />
         <Field label="새 비밀번호 한 번 더" name="next2" type="password" autoComplete="new-password" value={pw.next2} onChange={(e) => setPw({ ...pw, next2: e.target.value })} />
         <ErrorBox message={pwErr} />
         <button type="submit" className="btn-outline">비밀번호 바꾸기</button>
-      </form>
+      </form>}
     </main>
   );
 }

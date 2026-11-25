@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { uid } from '../../lib/storage.js';
+import { newId } from '../../lib/storage.js';
 import { navigate } from '../../router.js';
 import { ErrorBox, Field, MenuRow, SubHeader } from '../../components/ui.jsx';
 import { formatTime } from '../../time.js';
@@ -48,13 +48,13 @@ export default function MedEdit({ ctx, id }) {
       toast('약 정보를 저장했어요');
       navigate('/meds', { replace: true });
     } else {
-      const newId = uid('m');
+      const medId = newId();
       update((d) => ({
         ...d,
-        meds: [...d.meds, { id: newId, ...fields, times: [8 * 60], days: [0, 1, 2, 3, 4, 5, 6], meal: 'after' }],
+        meds: [...d.meds, { id: medId, ...fields, times: [8 * 60], days: [0, 1, 2, 3, 4, 5, 6], meal: 'after' }],
       }));
       toast('이제 드실 시간을 정해 주세요');
-      navigate(`/meds/${newId}/times`, { replace: true });
+      navigate(`/meds/${medId}/times`, { replace: true });
     }
   };
 

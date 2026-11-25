@@ -1,6 +1,7 @@
 import TabBar from '../../components/TabBar.jsx';
 import { MenuRow } from '../../components/ui.jsx';
 import { navigate } from '../../router.js';
+import { accountLabel } from '../../lib/account.js';
 import { FONT_LABEL, fontSize } from '../../lib/fontSize.js';
 
 export default function Settings({ ctx }) {
@@ -18,7 +19,7 @@ export default function Settings({ ctx }) {
         </span>
         <div>
           <b>{user.name}님</b>
-          <span>{user.username}</span>
+          <span>{accountLabel(user)}</span>
         </div>
       </section>
 
@@ -34,7 +35,7 @@ export default function Settings({ ctx }) {
         <MenuRow icon="door" title="계정" desc="로그아웃, 회원탈퇴" onClick={() => navigate('/settings/account')} />
       </div>
 
-      <p className="foot-note">약속 v1.0 · 데이터는 이 기기에 저장돼요</p>
+      <p className="foot-note">약속 v1.1 · {user.provider === 'demo' ? '체험 기록은 이 기기에만 저장돼요' : '기록은 서버에 안전하게 저장돼요'}</p>
       <TabBar current="settings" />
     </main>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import * as api from '../../lib/api.js';
+import { isSocial } from '../../lib/account.js';
 import { ErrorBox, Field, SubHeader } from '../../components/ui.jsx';
 
 export default function Account({ ctx }) {
@@ -19,7 +20,7 @@ export default function Account({ ctx }) {
     e.preventDefault();
     if (!window.confirm('정말 탈퇴할까요?\n등록한 약과 복용 기록이 모두 지워지고 되돌릴 수 없어요.')) return;
     try {
-      await api.withdraw(user.id, password);
+      await api.withdraw(user.id, password, { skipPassword: isSocial(user) });
       setUser(null);
       toast('탈퇴했어요. 그동안 고마웠어요');
     } catch (err) {
@@ -47,7 +48,9 @@ export default function Account({ ctx }) {
         </div>
       ) : (
         <form className="form" style={{ marginTop: 0 }} onSubmit={leave} noValidate>
-          <Field label="비밀번호 확인" name="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          {!isSocial(user) && (
+            <Field label="비밀번호 확인" name="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          )}
           <ErrorBox message={error} />
           <button type="submit" className="btn-danger">탈퇴하기</button>
           <button type="button" className="btn-text" onClick={() => setLeaving(false)}>그만두기</button>

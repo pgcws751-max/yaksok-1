@@ -42,11 +42,14 @@ export default function App() {
   const [user, setUser] = useState(undefined); // undefined = 확인 중
   const [data, setData] = useState(null);
   const [toast, setToast] = useState('');
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const loadedFor = useRef(null);
+  const synced = useRef(null); // 마지막으로 서버와 맞춘 데이터
 
-  // 처음 열 때 로그인 상태 확인 (자동 로그인)
+  // 처음 열 때 로그인 상태 확인 (자동 로그인, 간편 로그인에서 돌아온 경우 포함)
   useEffect(() => {
-    api.currentUser().then(setUser);
+    api.currentUser().then(setUser, () => setUser(null));
   }, []);
 
   // 로그인한 사람의 데이터 불러오기
@@ -54,17 +57,27 @@ export default function App() {
     if (!user) {
       setData(null);
       loadedFor.current = null;
+      synced.current = null;
       return;
     }
-    api.loadData(user.id).then((d) => {
-      loadedFor.current = user.id;
-      setData(d);
-    });
-  }, [user?.id]);
+    setLoadError(false);
+    api.loadData(user.id).then(
+      (d) => {
+        loadedFor.current = user.id;
+        synced.current = d;
+        setData(d);
+      },
+      () => setLoadError(true),
+    );
+  }, [user?.id, reloadKey]);
 
-  // 바뀐 데이터 저장
+  // 바뀐 부분만 저장 (Supabase 또는 체험 모드는 기기 저장소)
   useEffect(() => {
-    if (user && data && loadedFor.current === user.id) api.saveData(user.id, data);
+    if (!user || !data || loadedFor.current !== user.id) return;
+    const prev = synced.current;
+    synced.current = data;
+    if (!prev || prev === data) return;
+    api.syncData(user.id, prev, data).catch(() => setToast('저장하지 못했어요. 인터넷 연결을 확인해 주세요'));
   }, [data, user]);
 
   useEffect(() => {
@@ -156,6 +169,18 @@ export default function App() {
       }
     });
   }, [now, today, user, data, snoozeAt, path]);
+
+  if (user && loadError) {
+    return (
+      <div className="phone splash" style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24, textAlign: 'center' }}>
+        <span>약속</span>
+        <p className="sub">기록을 불러오지 못했어요.<br />인터넷 연결을 확인해 주세요.</p>
+        <button type="button" className="btn-primary" style={{ maxWidth: 280 }} onClick={() => setReloadKey((k) => k + 1)}>
+          다시 시도
+        </button>
+      </div>
+    );
+  }
 
   if (user === undefined || (user && !data)) {
     return <div className="phone splash">약속</div>;
