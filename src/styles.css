@@ -592,3 +592,11 @@ td.adm-empty { display: table-cell; }
   .adm-me { margin-left: auto; }
   .adm-main { padding: 16px; }
 }
+
+/* 관리자 로그인 */
+.adm-login { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--bg); }
+@media (min-width: 520px) { body:has(.adm-login) { padding: 0; } }
+.adm-login-card { width: 100%; max-width: 400px; padding: 28px 24px 20px; border-radius: 24px; display: flex; flex-direction: column; gap: 14px; }
+.adm-login-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.adm-login-brand h1 { font-size: 1.375rem; font-weight: 900; letter-spacing: -0.03em; }
+.adm-login-brand p { font-size: 0.875rem; color: var(--ink-3); margin-top: 2px; }
