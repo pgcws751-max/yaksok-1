@@ -57,6 +57,31 @@ const PATHS = {
     </>
   ),
   send: <path d="M4 12l16-8-6 16-2.5-6.5z M11.5 13.5L20 4" />,
+  phone: <path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" />,
+  pharmacy: (
+    <>
+      <rect x="4" y="4" width="16" height="16" rx="4" />
+      <path d="M12 8v8M8 12h8" />
+    </>
+  ),
+  hospital: (
+    <>
+      <path d="M4 21V8l8-4 8 4v13" />
+      <path d="M12 10v6M9 13h6M3 21h18" />
+    </>
+  ),
+  siren: (
+    <>
+      <path d="M6 18v-5a6 6 0 0112 0v5" />
+      <path d="M4 18h16v3H4zM12 3v2M4.5 6.5l1.5 1.5M19.5 6.5L18 8" />
+    </>
+  ),
+  pin: (
+    <>
+      <path d="M12 21s-7-6.2-7-11.5a7 7 0 0114 0C19 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </>
+  ),
   download: (
     <>
       <path d="M12 4v11M7 10l5 5 5-5" />
