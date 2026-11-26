@@ -8,6 +8,9 @@ import { formatTime } from './time.js';
 import { match, navigate, useRoute } from './router.js';
 
 import Login from './pages/auth/Login.jsx';
+import Intro, { INTRO_SEEN } from './pages/auth/Intro.jsx';
+import { load } from './lib/storage.js';
+import Icon from './components/Icon.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import FindId from './pages/auth/FindId.jsx';
 import FindPassword from './pages/auth/FindPassword.jsx';
@@ -23,7 +26,7 @@ import Profile from './pages/settings/Profile.jsx';
 import Account from './pages/settings/Account.jsx';
 import Display from './pages/settings/Display.jsx';
 
-const AUTH_PATHS = ['/login', '/signup', '/find-id', '/find-password'];
+const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
 
 function useClock() {
   const [now, setNow] = useState(() => new Date());
@@ -91,7 +94,7 @@ export default function App() {
   useEffect(() => {
     if (user === undefined) return;
     const isAuth = AUTH_PATHS.includes(path);
-    if (!user && !isAuth) navigate('/login', { replace: true });
+    if (!user && !isAuth) navigate(load(INTRO_SEEN, false) ? '/login' : '/intro', { replace: true });
     if (user && (isAuth || path === '/')) navigate('/home', { replace: true });
   }, [user, path]);
 
@@ -184,7 +187,15 @@ export default function App() {
   }
 
   if (user === undefined || (user && !data)) {
-    return <div className="phone splash">약속</div>;
+    return (
+      <div className="phone splash" aria-label="약속 불러오는 중">
+        <span className="splash-logo">
+          <Icon name="pill" size={34} color="#fff" strokeWidth={2.4} />
+        </span>
+        <b>약속</b>
+        <small>약 먹을 시간을 챙겨 드려요</small>
+      </div>
+    );
   }
 
   const ctx = {
@@ -208,7 +219,8 @@ export default function App() {
   let page = null;
   let params;
   if (!user) {
-    if (path === '/signup') page = <Signup ctx={ctx} />;
+    if (path === '/intro') page = <Intro />;
+    else if (path === '/signup') page = <Signup ctx={ctx} />;
     else if (path === '/find-id') page = <FindId />;
     else if (path === '/find-password') page = <FindPassword ctx={ctx} />;
     else page = <Login ctx={ctx} />;
