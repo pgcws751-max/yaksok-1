@@ -1,4 +1,5 @@
 import Icon from '../components/Icon.jsx';
+import { dialog } from '../components/Dialog.jsx';
 import MedIcon from '../components/MedIcon.jsx';
 import TabBar from '../components/TabBar.jsx';
 import { dateLabel, weekStart } from '../lib/date.js';
@@ -141,9 +142,9 @@ export default function Home({ ctx }) {
                 className={`check-btn ${i.taken ? 'is-on' : ''}`}
                 aria-pressed={i.taken}
                 aria-label={i.taken ? `${i.med.name} 기록 취소` : `${i.med.name} 먹었어요`}
-                onClick={() => {
+                onClick={async () => {
                   if (!i.taken) takeDose(i.key);
-                  else if (window.confirm(`${i.med.name} 복용 기록을 취소할까요?`)) untakeDose(i.key);
+                  else if (await dialog.confirm({ title: '복용 기록을 취소할까요?', message: `${next.label} ${i.med.name} ${i.med.dose}`, confirmText: '기록 취소', cancelText: '그대로 두기' })) untakeDose(i.key);
                 }}
               >
                 <Icon name="check" size={20} strokeWidth={3} />

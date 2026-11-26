@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { dialog } from '../components/Dialog.jsx';
 import Icon from '../components/Icon.jsx';
 import { medColor } from '../components/MedIcon.jsx';
 import TabBar from '../components/TabBar.jsx';
@@ -136,8 +137,9 @@ function Calendar({ ctx }) {
                             type="button"
                             className="undo"
                             aria-label={`${i.med.name} 기록 취소`}
-                            onClick={() => {
-                              if (window.confirm(`${i.med.name} 복용 기록을 취소할까요?`)) untakeDose(doseKey(i.med.id, s.minutes), selected);
+                            onClick={async () => {
+                              const ok = await dialog.confirm({ title: '복용 기록을 취소할까요?', message: `${s.label} ${i.med.name} ${i.med.dose}`, confirmText: '기록 취소', cancelText: '그대로 두기' });
+                              if (ok) untakeDose(doseKey(i.med.id, s.minutes), selected);
                             }}
                           >
                             <Icon name="close" size={12} strokeWidth={3} />

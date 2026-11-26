@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { dialog } from '../../components/Dialog.jsx';
 import { newId } from '../../lib/storage.js';
 import { navigate } from '../../router.js';
 import { ErrorBox, Field, MenuRow, SubHeader } from '../../components/ui.jsx';
@@ -58,8 +59,14 @@ export default function MedEdit({ ctx, id }) {
     }
   };
 
-  const remove = () => {
-    if (!window.confirm(`'${existing.name}'을(를) 지울까요?\n지난 복용 기록도 함께 계산에서 빠져요.`)) return;
+  const remove = async () => {
+    const ok = await dialog.confirm({
+      title: `'${existing.name}'을(를) 지울까요?`,
+      message: '이 약의 지난 복용 기록도 함께 지워져요.',
+      confirmText: '지우기',
+      danger: true,
+    });
+    if (!ok) return;
     update((d) => ({ ...d, meds: d.meds.filter((m) => m.id !== id) }));
     toast('약을 지웠어요');
     navigate('/meds', { replace: true });

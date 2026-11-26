@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { DialogHost } from './components/Dialog.jsx';
 import * as api from './lib/api.js';
 import { dateKey, nowMinutes } from './lib/date.js';
 import { slotsOn } from './lib/schedule.js';
@@ -228,6 +229,7 @@ export default function App() {
   return (
     <div className="phone">
       {page}
+      <DialogHost />
       {toast && (
         <div className="toast" role="status" aria-live="polite">
           {toast}
