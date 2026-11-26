@@ -6,6 +6,7 @@ import { GREETING, SERVICES, SUGGESTIONS, getReply } from '../lib/chatbot.js';
 import { phoneText } from '../lib/contacts.js';
 import { load, save } from '../lib/storage.js';
 import { navigate } from '../router.js';
+import { canSpeak, listen, speak, stopSpeaking } from '../lib/voice.js';
 
 const KEY = 'yaksok:chat2';
 
@@ -168,10 +169,76 @@ function Card({ card, send, disabled }) {
   return null;
 }
 
+function VoiceOverlay({ onDone, onCancel }) {
+  const [heard, setHeard] = useState('');
+  const [phase, setPhase] = useState('listening'); // listening | done
+  useEffect(() => {
+    const ac = new AbortController();
+    listen({ onText: setHeard, signal: ac.signal }).then((phrase) => {
+      if (!phrase) return;
+      setPhase('done');
+      setTimeout(() => !ac.signal.aborted && onDone(phrase), 500);
+    });
+    const onKey = (e) => e.key === 'Escape' && onCancel();
+    document.addEventListener('keydown', onKey);
+    return () => {
+      ac.abort();
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+  return (
+    <div className="voice" role="dialog" aria-modal="true" aria-label="음성으로 말하기">
+      <span className="badge wait voice-badge">샘플 · 음성 인식 연결 전</span>
+      <p className="voice-state">{phase === 'done' ? '이렇게 들었어요' : heard ? '듣고 있어요…' : '말씀해 주세요'}</p>
+      <p className="voice-text" aria-live="polite">{heard || '예: "딸에게 전화해줘"'}</p>
+      <div className={`voice-mic ${phase}`}>
+        <span className="ring r1" />
+        <span className="ring r2" />
+        <span className="core">
+          <Icon name="mic" size={40} color="#fff" strokeWidth={2.2} />
+        </span>
+      </div>
+      <div className="voice-bars" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => (
+          <i key={i} style={{ animationDelay: `${(i % 5) * 0.12}s` }} />
+        ))}
+      </div>
+      <button type="button" className="btn-soft voice-cancel" onClick={onCancel}>
+        그만하기
+      </button>
+    </div>
+  );
+}
+
+function SpeakButton({ text }) {
+  const [on, setOn] = useState(false);
+  return (
+    <button
+      type="button"
+      className={`speak-btn ${on ? 'on' : ''}`}
+      aria-label={on ? '읽기 멈추기' : '소리로 듣기'}
+      onClick={() => {
+        if (on) {
+          stopSpeaking();
+          setOn(false);
+          return;
+        }
+        if (speak(text, { onEnd: () => setOn(false) })) setOn(true);
+        else dialog.alert({ title: '이 기기에서는 읽어 주기를 쓸 수 없어요' });
+      }}
+    >
+      <Icon name={on ? 'stop' : 'speaker'} size={15} strokeWidth={2.4} />
+      {on ? '멈추기' : '듣기'}
+    </button>
+  );
+}
+
 export default function Chat({ ctx }) {
   const [messages, setMessages] = useState(() => load(KEY, null, 'session') || [GREETING]);
   const [text, setText] = useState('');
   const [typing, setTyping] = useState(false);
+  const [voice, setVoice] = useState(false);
+  useEffect(() => () => stopSpeaking(), []);
   const endRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -231,6 +298,7 @@ export default function Chat({ ctx }) {
               <BotAvatar />
               <div className="msg-body">
                 <p className={`bubble ${m.tone || ''}`}>{m.text}</p>
+                {canSpeak() && <SpeakButton text={m.text} />}
                 {m.card && <Card card={m.card} send={send} disabled={typing} />}
                 {m.action && (
                   <button type="button" className="chat-action" onClick={() => (m.action.ask ? send(m.action.ask) : navigate(m.action.path))}>
@@ -271,12 +339,28 @@ export default function Chat({ ctx }) {
             inputRef.current?.focus();
           }}
         >
-          <input ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} placeholder="예: 딸에게 전화해줘, 가까운 약국" aria-label="메시지" maxLength={300} />
-          <button type="submit" className="chat-send" aria-label="보내기" disabled={!text.trim() || typing}>
-            <Icon name="send" size={20} strokeWidth={2.4} />
-          </button>
+          <input ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} placeholder="말하거나 적어 주세요" aria-label="메시지" maxLength={300} />
+          {text.trim() ? (
+            <button type="submit" className="chat-send" aria-label="보내기" disabled={typing}>
+              <Icon name="send" size={20} strokeWidth={2.4} />
+            </button>
+          ) : (
+            <button type="button" className="chat-send mic" aria-label="음성으로 말하기" disabled={typing} onClick={() => setVoice(true)}>
+              <Icon name="mic" size={22} strokeWidth={2.3} />
+            </button>
+          )}
         </form>
       </div>
+
+      {voice && (
+        <VoiceOverlay
+          onCancel={() => setVoice(false)}
+          onDone={(phrase) => {
+            setVoice(false);
+            send(phrase);
+          }}
+        />
+      )}
 
       <TabBar current="chat" />
     </main>
