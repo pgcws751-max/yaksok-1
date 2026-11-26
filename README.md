@@ -71,6 +71,13 @@ src/
 - 테이블: `push_subscriptions`(기기별 구독), `push_snoozes`(10분 뒤 다시), `push_sent`(보낸 기록, 3일 보관). 푸시 키는 Supabase Vault에 보관.
 - 아이폰은 홈 화면에 추가한 앱에서만 푸시를 받을 수 있어요(iOS 16.4 이상).
 
+## 관리자 화면 (`#/admin`)
+
+- 관리자: `admins` 테이블에 있는 회원만. 앱의 설정에 "관리자 화면" 메뉴가 생겨요.
+- 대시보드(회원 수, 7일 접속, 7일 평균 복용률, 알림 기기, 오늘 보낸 알림, 일별 가입·복용률 차트), 회원 목록·검색, 회원 상세(약·30일 복용·최근 기록), 열람 기록.
+- 모든 관리자 데이터는 `admin_*` 함수가 서버에서 관리자인지 확인한 뒤 돌려줘요. 회원 상세를 열 때마다 `admin_audit`에 기록돼요.
+- 관리자 추가: Supabase SQL Editor에서 `insert into admins (user_id) select id from profiles where username = '아이디';`
+
 ## 남은 할 일
 
 - 카카오·구글 로그인: Supabase 대시보드에서 각 제공자를 켜고 키 입력, Redirect URL 등록

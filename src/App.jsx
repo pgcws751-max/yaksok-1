@@ -26,6 +26,7 @@ import Profile from './pages/settings/Profile.jsx';
 import Account from './pages/settings/Account.jsx';
 import Display from './pages/settings/Display.jsx';
 import Install from './pages/settings/Install.jsx';
+import AdminApp from './pages/admin/AdminApp.jsx';
 
 const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
 
@@ -97,6 +98,7 @@ export default function App() {
     const isAuth = AUTH_PATHS.includes(path);
     if (!user && !isAuth) navigate(load(INTRO_SEEN, false) ? '/login' : '/intro', { replace: true });
     if (user && (isAuth || path === '/')) navigate('/home', { replace: true });
+    if (user && path.startsWith('/admin') && !user.isAdmin) navigate('/home', { replace: true });
   }, [user, path]);
 
   const update = useCallback((fn) => setData((d) => (d ? fn(d) : d)), []);
@@ -248,6 +250,15 @@ export default function App() {
   else if (path === '/settings/display') page = <Display ctx={ctx} />;
   else if (path === '/settings/install') page = <Install ctx={ctx} />;
   else page = <Home ctx={ctx} />;
+
+  if (user && user.isAdmin && path.startsWith('/admin')) {
+    return (
+      <>
+        <AdminApp ctx={ctx} path={path} />
+        <DialogHost />
+      </>
+    );
+  }
 
   return (
     <div className="phone">
