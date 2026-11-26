@@ -39,6 +39,7 @@ export default function Settings({ ctx }) {
         />
         <MenuRow icon="download" title="앱으로 설치하기" desc={isStandalone() ? '설치됨' : '홈 화면에 아이콘 추가'} onClick={() => navigate('/settings/install')} />
         <MenuRow icon="text" title="글자 크기" desc={FONT_LABEL[fontSize()] || '보통'} onClick={() => navigate('/settings/display')} />
+        <MenuRow icon="phone" title="가족·지인 연락처" desc="도우미로 바로 전화 걸기" onClick={() => navigate('/settings/contacts')} />
         <MenuRow icon="user" title="내 정보" desc="정보 수정, 비밀번호 변경" onClick={() => navigate('/settings/profile')} />
         <MenuRow icon="door" title="계정" desc="로그아웃, 회원탈퇴" onClick={() => navigate('/settings/account')} />
       </div>

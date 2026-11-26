@@ -28,6 +28,7 @@ import Display from './pages/settings/Display.jsx';
 import Install from './pages/settings/Install.jsx';
 import AdminApp from './pages/admin/AdminApp.jsx';
 import Chat from './pages/Chat.jsx';
+import Contacts from './pages/settings/Contacts.jsx';
 import AdminLogin from './pages/admin/AdminLogin.jsx';
 
 const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
@@ -266,6 +267,7 @@ export default function App() {
   else if (path === '/settings/account') page = <Account ctx={ctx} />;
   else if (path === '/settings/display') page = <Display ctx={ctx} />;
   else if (path === '/settings/install') page = <Install ctx={ctx} />;
+  else if (path === '/settings/contacts') page = <Contacts ctx={ctx} />;
   else page = <Home ctx={ctx} />;
 
   if (user && user.isAdmin && path.startsWith('/admin')) {
