@@ -340,15 +340,12 @@ export default function Chat({ ctx }) {
           }}
         >
           <input ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} placeholder="말하거나 적어 주세요" aria-label="메시지" maxLength={300} />
-          {text.trim() ? (
-            <button type="submit" className="chat-send" aria-label="보내기" disabled={typing}>
-              <Icon name="send" size={20} strokeWidth={2.4} />
-            </button>
-          ) : (
-            <button type="button" className="chat-send mic" aria-label="음성으로 말하기" disabled={typing} onClick={() => setVoice(true)}>
-              <Icon name="mic" size={22} strokeWidth={2.3} />
-            </button>
-          )}
+          <button type="button" className="chat-send mic" aria-label="음성으로 말하기" disabled={typing} onClick={() => setVoice(true)}>
+            <Icon name="mic" size={22} strokeWidth={2.3} />
+          </button>
+          <button type="submit" className="chat-send" aria-label="보내기" disabled={!text.trim() || typing}>
+            <Icon name="send" size={20} strokeWidth={2.4} />
+          </button>
         </form>
       </div>
 

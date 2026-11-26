@@ -681,7 +681,9 @@ td.adm-empty { display: table-cell; }
 .btn-119 { height: 52px; border: none; border-radius: 14px; background: var(--warn); color: #fff; font-size: 1.0625rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
 /* ───── 도우미: 음성 (샘플) ───── */
-.chat-send.mic { width: 48px; height: 48px; margin: -2px 0; box-shadow: 0 4px 12px rgba(31, 111, 229, 0.3); }
+.chat-send.mic { background: var(--primary-soft); color: var(--primary); }
+.chat-send.mic:disabled { background: var(--field); color: var(--ink-4); }
+.chat-input { gap: 6px; }
 .speak-btn { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px; border: none; border-radius: 99px; background: none; color: var(--ink-3); font-size: 0.75rem; font-weight: 600; margin-top: -2px; }
 .speak-btn.on { background: var(--primary-soft); color: var(--primary); }
 .voice { position: fixed; inset: 0; z-index: 40; background: rgba(242, 244, 246, 0.97); backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; animation: dlg-fade 0.15s ease-out; }
