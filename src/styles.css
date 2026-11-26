@@ -679,3 +679,23 @@ td.adm-empty { display: table-cell; }
 .btn-call { background: #12805c; color: #fff; }
 .btn-sms { background: var(--field); color: var(--ink-2); }
 .btn-119 { height: 52px; border: none; border-radius: 14px; background: var(--warn); color: #fff; font-size: 1.0625rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* ───── 도우미: 음성 (샘플) ───── */
+.chat-send.mic { width: 48px; height: 48px; margin: -2px 0; box-shadow: 0 4px 12px rgba(31, 111, 229, 0.3); }
+.speak-btn { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 10px; border: none; border-radius: 99px; background: none; color: var(--ink-3); font-size: 0.75rem; font-weight: 600; margin-top: -2px; }
+.speak-btn.on { background: var(--primary-soft); color: var(--primary); }
+.voice { position: fixed; inset: 0; z-index: 40; background: rgba(242, 244, 246, 0.97); backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; animation: dlg-fade 0.15s ease-out; }
+.voice-badge { position: absolute; top: 20px; }
+.voice-state { font-size: 1rem; font-weight: 700; color: var(--ink-3); }
+.voice-text { min-height: 2.6em; max-width: 320px; font-size: 1.625rem; font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink); word-break: keep-all; }
+.voice-text:empty::before { content: ''; }
+.voice-mic { position: relative; width: 180px; height: 180px; display: grid; place-items: center; margin: 12px 0 4px; }
+.voice-mic .ring { position: absolute; inset: 0; border-radius: 50%; background: var(--primary); opacity: 0.12; animation: voice-pulse 1.8s ease-out infinite; }
+.voice-mic .ring.r2 { animation-delay: 0.6s; }
+.voice-mic.done .ring { animation: none; opacity: 0.08; }
+.voice-mic .core { position: relative; width: 96px; height: 96px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; box-shadow: 0 10px 28px rgba(31, 111, 229, 0.35); }
+@keyframes voice-pulse { 0% { transform: scale(0.55); opacity: 0.3; } 100% { transform: scale(1.1); opacity: 0; } }
+.voice-bars { display: flex; align-items: center; gap: 5px; height: 36px; }
+.voice-bars i { width: 5px; height: 10px; border-radius: 3px; background: var(--accent); animation: voice-bar 0.9s ease-in-out infinite; }
+@keyframes voice-bar { 0%, 100% { height: 8px; } 50% { height: 34px; } }
+.voice-cancel { margin-top: 18px; height: 48px; padding: 0 28px; }
