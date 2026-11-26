@@ -3,6 +3,7 @@ import { MenuRow } from '../../components/ui.jsx';
 import { navigate } from '../../router.js';
 import { accountLabel } from '../../lib/account.js';
 import { isStandalone, pushWanted } from '../../lib/pwa.js';
+import { isNative } from '../../lib/native.js';
 import { FONT_LABEL, fontSize } from '../../lib/fontSize.js';
 
 export default function Settings({ ctx }) {
@@ -34,10 +35,12 @@ export default function Settings({ ctx }) {
         <MenuRow
           icon="bell"
           title="알림 설정"
-          desc={s.notify ? `켜짐${pushWanted() ? ' · 앱이 닫혀도 알림' : ''}${s.remind ? ` · 안 드시면 ${s.remindMinutes}분 뒤 다시` : ''}` : '꺼짐'}
+          desc={s.notify ? `켜짐${pushWanted() || isNative() ? ' · 앱이 닫혀도 알림' : ''}${s.remind ? ` · 안 드시면 ${s.remindMinutes}분 뒤 다시` : ''}` : '꺼짐'}
           onClick={() => navigate('/settings/notify')}
         />
-        <MenuRow icon="download" title="앱으로 설치하기" desc={isStandalone() ? '설치됨' : '홈 화면에 아이콘 추가'} onClick={() => navigate('/settings/install')} />
+        {!isNative() && (
+          <MenuRow icon="download" title="앱으로 설치하기" desc={isStandalone() ? '설치됨' : '홈 화면에 아이콘 추가'} onClick={() => navigate('/settings/install')} />
+        )}
         <MenuRow icon="text" title="글자 크기" desc={FONT_LABEL[fontSize()] || '보통'} onClick={() => navigate('/settings/display')} />
         <MenuRow icon="phone" title="가족·지인 연락처" desc="도우미로 바로 전화 걸기" onClick={() => navigate('/settings/contacts')} />
         <MenuRow icon="user" title="내 정보" desc="정보 수정, 비밀번호 변경" onClick={() => navigate('/settings/profile')} />
