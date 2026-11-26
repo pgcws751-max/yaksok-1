@@ -4,6 +4,7 @@ import { BarChart, ChartCard, LineChart } from '../../components/charts.jsx';
 import * as api from '../../lib/api.js';
 import { WEEKDAYS } from '../../lib/date.js';
 import { match, navigate } from '../../router.js';
+import { dialog } from '../../components/Dialog.jsx';
 import { MEAL_TEXT, formatTime } from '../../time.js';
 
 // ───── 공통 ─────
@@ -412,8 +413,20 @@ export default function AdminApp({ ctx, path }) {
         </nav>
         <div className="adm-me">
           <span className="muted">{ctx.user.username || ctx.user.name}</span>
-          <button type="button" className="btn-soft" onClick={() => navigate('/settings')}>
-            앱으로
+          <button type="button" className="btn-soft" onClick={() => navigate('/home')}>
+            앱 보기
+          </button>
+          <button
+            type="button"
+            className="btn-soft"
+            onClick={async () => {
+              if (!(await dialog.confirm({ title: '관리자 로그아웃할까요?', confirmText: '로그아웃' }))) return;
+              await api.logOut();
+              ctx.setUser(null);
+              navigate('/admin/login', { replace: true });
+            }}
+          >
+            로그아웃
           </button>
         </div>
       </header>

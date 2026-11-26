@@ -27,6 +27,7 @@ import Account from './pages/settings/Account.jsx';
 import Display from './pages/settings/Display.jsx';
 import Install from './pages/settings/Install.jsx';
 import AdminApp from './pages/admin/AdminApp.jsx';
+import AdminLogin from './pages/admin/AdminLogin.jsx';
 
 const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
 
@@ -96,9 +97,13 @@ export default function App() {
   useEffect(() => {
     if (user === undefined) return;
     const isAuth = AUTH_PATHS.includes(path);
-    if (!user && !isAuth) navigate(load(INTRO_SEEN, false) ? '/login' : '/intro', { replace: true });
+    const adminLogin = path === '/admin/login';
+    const adminArea = path.startsWith('/admin') && !adminLogin;
+    if (!user && adminArea) navigate('/admin/login', { replace: true });
+    else if (!user && !isAuth && !adminLogin) navigate(load(INTRO_SEEN, false) ? '/login' : '/intro', { replace: true });
     if (user && (isAuth || path === '/')) navigate('/home', { replace: true });
-    if (user && path.startsWith('/admin') && !user.isAdmin) navigate('/home', { replace: true });
+    if (user && adminLogin && user.isAdmin) navigate('/admin', { replace: true });
+    if (user && adminArea && !user.isAdmin) navigate('/admin/login', { replace: true });
   }, [user, path]);
 
   const update = useCallback((fn) => setData((d) => (d ? fn(d) : d)), []);
@@ -184,6 +189,16 @@ export default function App() {
       }
     });
   }, [now, today, user, data, snoozeAt, path, pushOn]);
+
+  // 관리자 로그인 창은 회원 데이터 없이 바로 보여 줍니다
+  if (path === '/admin/login' && !(user && user.isAdmin)) {
+    return (
+      <>
+        <AdminLogin ctx={{ user, setUser, toast: setToast }} />
+        <DialogHost />
+      </>
+    );
+  }
 
   if (user && loadError) {
     return (
