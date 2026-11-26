@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">약속</string>
+    <string name="title_activity_main">약속</string>
+    <string name="package_name">com.pgcws751.yaksok</string>
+    <string name="custom_url_scheme">com.pgcws751.yaksok</string>
+</resources>

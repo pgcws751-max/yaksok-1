@@ -1,0 +1,14 @@
+{
+  "appId": "com.pgcws751.yaksok",
+  "appName": "약속",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#F2F4F6"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_yaksok",
+      "iconColor": "#1F6FE5"
+    }
+  }
+}

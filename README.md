@@ -86,6 +86,13 @@ src/
 - 모든 관리자 데이터는 `admin_*` 함수가 서버에서 관리자인지 확인한 뒤 돌려줘요. 회원 상세를 열 때마다 `admin_audit`에 기록돼요.
 - 관리자 추가: Supabase SQL Editor에서 `insert into admins (user_id) select id from profiles where username = '아이디';`
 
+## 안드로이드 앱 (APK)
+
+- Capacitor로 웹앱을 감싼 안드로이드 프로젝트: `android/`, 설정 `capacitor.config.json` (앱 ID `com.pgcws751.yaksok`)
+- 알림: 앱에서는 웹 푸시 대신 **휴대폰 자체 예약 알림**(앞으로 14일치, 기록이 바뀔 때마다 다시 예약, 인터넷 없어도 울림). `src/lib/native.js`
+- 빌드: `main`에 올리면 GitHub Actions(`.github/workflows/android.yml`)가 시험용 APK를 만들어 Releases의 **android-latest**에 올려요.
+- 직접 빌드: `npm run android:sync` 후 Android Studio로 `android/` 열기
+
 ## 남은 할 일
 
 - 카카오·구글 로그인: Supabase 대시보드에서 각 제공자를 켜고 키 입력, Redirect URL 등록

@@ -4,6 +4,7 @@ import * as api from './lib/api.js';
 import { dateKey, nowMinutes } from './lib/date.js';
 import { slotsOn } from './lib/schedule.js';
 import { currentSubscription, pushWanted, showLocalNotification } from './lib/pwa.js';
+import { clearReminders, initNative, isNative, notifyPermission, requestNotifyPermission, rescheduleReminders } from './lib/native.js';
 import { formatTime } from './time.js';
 import { match, navigate, useRoute } from './router.js';
 
@@ -154,7 +155,21 @@ export default function App() {
   );
 
   // 이 기기에서 서버 푸시를 받기로 했다면, 구독 정보를 서버에 다시 맞춰 둡니다.
-  const pushOn = !!user && user.provider !== 'demo' && pushWanted();
+  const pushOn = !!user && user.provider !== 'demo' && !isNative() && pushWanted();
+
+  // 안드로이드 앱: 처음 한 번 준비, 로그인하면 알림 허용을 묻고, 기록이 바뀔 때마다 휴대폰 알림 예약을 다시 맞춤
+  useEffect(() => {
+    initNative(navigate);
+  }, []);
+  useEffect(() => {
+    if (!isNative() || !user) return;
+    notifyPermission().then((p) => (p === 'prompt' || p === 'prompt-with-rationale' ? requestNotifyPermission() : p)).then(() => data && rescheduleReminders(data));
+  }, [user?.id]);
+  useEffect(() => {
+    if (!isNative()) return;
+    if (user && data) rescheduleReminders(data);
+    if (!user) clearReminders();
+  }, [user, data]);
   useEffect(() => {
     if (!pushOn || !data || typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
     currentSubscription().then((sub) => sub && api.savePushSubscription(user.id, sub).catch(() => {}));
@@ -172,7 +187,7 @@ export default function App() {
       if (fired.current.has(id)) return;
       fired.current.add(id);
       const names = slot.items.filter((i) => !i.taken).map((i) => i.med.name).join(', ');
-      if (!pushOn) {
+      if (!pushOn && !isNative()) {
         showLocalNotification(`${slot.label} 약 드실 시간이에요${again ? ' (다시 알림)' : ''}`, {
           body: `${formatTime(slot.minutes)} · ${names}`,
           tag: `yaksok-${today}-${slot.minutes}`,

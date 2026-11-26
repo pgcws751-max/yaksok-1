@@ -4,6 +4,71 @@ import { SubHeader, Toggle } from '../../components/ui.jsx';
 import * as api from '../../lib/api.js';
 import { currentSubscription, pushSupport, pushWanted, showLocalNotification, subscribePush, unsubscribePush } from '../../lib/pwa.js';
 import { navigate } from '../../router.js';
+import { exactAlarmSetting, isNative, notifyPermission, openExactAlarmSetting, pendingCount, requestNotifyPermission, rescheduleReminders, testNotification } from '../../lib/native.js';
+
+// 안드로이드 앱: 휴대폰 자체 예약 알림 상태
+function NativeNotifyCard({ data, toast }) {
+  const [st, setSt] = useState({ perm: 'loading', exact: 'granted', pending: 0 });
+  const refresh = async () => setSt({ perm: await notifyPermission(), exact: await exactAlarmSetting(), pending: await pendingCount() });
+  useEffect(() => {
+    refresh();
+    const t = setInterval(refresh, 2000); // 설정 화면에서 돌아왔을 때 반영
+    return () => clearInterval(t);
+  }, []);
+  const on = st.perm === 'granted';
+  return (
+    <section className="card push-card">
+      <div className="push-head">
+        <span className={`push-ic ${on ? 'on' : ''}`}>
+          <Icon name="bell" size={22} strokeWidth={2.2} />
+        </span>
+        <div className="push-txt">
+          <b>휴대폰 알림</b>
+          <span className={on ? 'good' : ''}>{st.perm === 'loading' ? '확인하는 중' : on ? `켜짐 · 예약 ${st.pending}개` : '꺼짐'}</span>
+        </div>
+      </div>
+      <p className="set-desc">
+        {on
+          ? '앞으로 2주 동안의 복용 시간을 휴대폰에 예약해 두었어요. 인터넷이 없어도 정해진 시간에 울려요.'
+          : st.perm === 'denied'
+            ? '휴대폰 설정 > 애플리케이션 > 약속 > 알림에서 알림을 허용해 주세요.'
+            : '알림을 허용하면 약 드실 시간에 휴대폰이 알려 드려요.'}
+      </p>
+      {!on && st.perm !== 'denied' && st.perm !== 'loading' && (
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={async () => {
+            if ((await requestNotifyPermission()) === 'granted') {
+              rescheduleReminders(data);
+              toast('이제 휴대폰으로 알려 드려요');
+            }
+            refresh();
+          }}
+        >
+          알림 허용하기
+        </button>
+      )}
+      {on && st.exact !== 'granted' && (
+        <button type="button" className="btn-outline" onClick={openExactAlarmSetting}>
+          정확한 시간에 울리도록 설정하기
+        </button>
+      )}
+      {on && (
+        <button
+          type="button"
+          className="btn-outline"
+          onClick={async () => {
+            await testNotification();
+            toast('3초 뒤에 시험 알림이 와요');
+          }}
+        >
+          시험 알림 보내기
+        </button>
+      )}
+    </section>
+  );
+}
 
 // 이 기기의 푸시 상태: loading | demo | ios-needs-install | unsupported | denied | on | off
 async function readPushState(user) {
@@ -33,7 +98,7 @@ export default function NotifySettings({ ctx }) {
   const set = (patch) => update((d) => ({ ...d, settings: { ...d.settings, ...patch } }));
 
   useEffect(() => {
-    readPushState(user).then(setPush);
+    if (!isNative()) readPushState(user).then(setPush);
   }, [user]);
 
   const turnPushOn = async () => {
@@ -75,6 +140,9 @@ export default function NotifySettings({ ctx }) {
     <main className="screen">
       <SubHeader title="알림 설정" back="/settings" />
 
+      {isNative() ? (
+        <NativeNotifyCard data={data} toast={toast} />
+      ) : (
       <section className="card push-card">
         <div className="push-head">
           <span className={`push-ic ${push === 'on' ? 'on' : ''}`}>
@@ -107,6 +175,7 @@ export default function NotifySettings({ ctx }) {
           </button>
         )}
       </section>
+      )}
 
       <div className="set-list">
         <section className="card set">
