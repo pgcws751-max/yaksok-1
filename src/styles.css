@@ -393,6 +393,27 @@ h1, h2, h3, p { margin: 0; }
 .btn-kakao { border: none; background: #fee500; color: rgba(0, 0, 0, 0.85); }
 .btn-google { border: 1px solid #dadce0; background: #fff; color: #1f1f1f; }
 
+/* ───── 확인창 · 알림창 ───── */
+.dlg-backdrop {
+  position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: rgba(25, 31, 40, 0.48); animation: dlg-fade 0.15s ease-out;
+}
+.dlg {
+  width: 100%; max-width: 340px; padding: 24px 20px 20px; border-radius: var(--r-xl); background: var(--card);
+  box-shadow: 0 20px 50px rgba(25, 31, 40, 0.25); animation: dlg-pop 0.18s ease-out;
+}
+.dlg-title { font-size: 1.1875rem; font-weight: 800; line-height: 1.4; letter-spacing: -0.02em; text-align: center; word-break: keep-all; }
+.dlg-msg { margin-top: 8px; font-size: 0.9375rem; line-height: 1.55; color: var(--ink-3); text-align: center; white-space: pre-line; word-break: keep-all; }
+.dlg-actions { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dlg-actions.single { grid-template-columns: 1fr; }
+.dlg-btn { height: 3.25rem; border: none; border-radius: var(--r); font-size: 1rem; font-weight: 700; }
+.dlg-btn.cancel { background: var(--field); color: var(--ink-2); }
+.dlg-btn.ok { background: var(--primary); color: #fff; }
+.dlg-btn.ok.danger { background: var(--warn); }
+.dlg-btn:active { transform: scale(0.98); }
+@keyframes dlg-fade { from { opacity: 0; } }
+@keyframes dlg-pop { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
+
 /* ───── 하단 메뉴 ───── */
 .tabbar {
   position: sticky; bottom: 0; margin-top: auto; z-index: 5;

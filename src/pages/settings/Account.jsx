@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { dialog } from '../../components/Dialog.jsx';
 import * as api from '../../lib/api.js';
 import { isSocial } from '../../lib/account.js';
 import { ErrorBox, Field, SubHeader } from '../../components/ui.jsx';
@@ -10,7 +11,7 @@ export default function Account({ ctx }) {
   const [error, setError] = useState('');
 
   const logout = async () => {
-    if (!window.confirm('로그아웃할까요?')) return;
+    if (!(await dialog.confirm({ title: '로그아웃할까요?', confirmText: '로그아웃' }))) return;
     await api.logOut();
     setUser(null);
     toast('로그아웃했어요');
@@ -18,7 +19,13 @@ export default function Account({ ctx }) {
 
   const leave = async (e) => {
     e.preventDefault();
-    if (!window.confirm('정말 탈퇴할까요?\n등록한 약과 복용 기록이 모두 지워지고 되돌릴 수 없어요.')) return;
+    const ok = await dialog.confirm({
+      title: '정말 탈퇴할까요?',
+      message: '등록한 약과 복용 기록이 모두 지워지고 되돌릴 수 없어요.',
+      confirmText: '탈퇴하기',
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await api.withdraw(user.id, password, { skipPassword: isSocial(user) });
       setUser(null);
