@@ -27,6 +27,7 @@ import Account from './pages/settings/Account.jsx';
 import Display from './pages/settings/Display.jsx';
 import Install from './pages/settings/Install.jsx';
 import AdminApp from './pages/admin/AdminApp.jsx';
+import Chat from './pages/Chat.jsx';
 import AdminLogin from './pages/admin/AdminLogin.jsx';
 
 const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
@@ -258,6 +259,7 @@ export default function App() {
   else if ((params = match('/meds/:id/times', path))) page = <MedTimes key={params.id} ctx={ctx} id={params.id} />;
   else if ((params = match('/meds/:id', path))) page = <MedEdit key={params.id} ctx={ctx} id={params.id} />;
   else if (path === '/history') page = <History ctx={ctx} />;
+  else if (path === '/chat') page = <Chat ctx={ctx} />;
   else if (path === '/settings') page = <Settings ctx={ctx} />;
   else if (path === '/settings/notify') page = <NotifySettings ctx={ctx} />;
   else if (path === '/settings/profile') page = <Profile ctx={ctx} />;

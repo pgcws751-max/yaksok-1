@@ -50,6 +50,13 @@ const PATHS = {
   chevron: <path d="M9 5l7 7-7 7" />,
   text: <path d="M4 7V5h10v2M9 5v14M7 19h4M14 12v-1h6v1M17 11v8M15.5 19h3" />,
   close: <path d="M6 6l12 12M18 6L6 18" />,
+  chat: (
+    <>
+      <path d="M4 5h16v11H9l-4 3.5V16H4z" />
+      <path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" strokeWidth="3" />
+    </>
+  ),
+  send: <path d="M4 12l16-8-6 16-2.5-6.5z M11.5 13.5L20 4" />,
   download: (
     <>
       <path d="M12 4v11M7 10l5 5 5-5" />
