@@ -3,7 +3,8 @@
   "appName": "약속",
   "webDir": "dist",
   "android": {
-    "backgroundColor": "#F2F4F6"
+    "backgroundColor": "#F2F4F6",
+    "adjustMarginsForEdgeToEdge": "auto"
   },
   "plugins": {
     "LocalNotifications": {

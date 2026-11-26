@@ -9,10 +9,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- 상태 표시줄·내비게이션 바 영역을 앱 바탕색과 맞추고, 아이콘은 어둡게 -->
+        <item name="android:windowBackground">@color/yaksok_bg</item>
+        <item name="android:statusBarColor">@color/yaksok_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 
