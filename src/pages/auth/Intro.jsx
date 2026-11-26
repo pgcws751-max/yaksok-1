@@ -63,7 +63,7 @@ function ArtScore() {
       <div className="ia-card ia-score">
         <svg width="120" height="120" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="46" fill="none" stroke="#EEF0F3" strokeWidth="14" />
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#18C37E" strokeWidth="14" strokeLinecap="round" strokeDasharray={`${c * 0.88} ${c}`} transform="rotate(-90 60 60)" className="ia-arc" />
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#3182F6" strokeWidth="14" strokeLinecap="round" strokeDasharray={`${c * 0.88} ${c}`} transform="rotate(-90 60 60)" className="ia-arc" />
           <text x="60" y="68" textAnchor="middle" fontSize="26" fontWeight="900" fill="#191F28">88%</text>
         </svg>
         <div className="ia-stats">

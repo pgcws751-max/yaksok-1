@@ -2,12 +2,12 @@
    글자 크기는 모두 rem 단위입니다. 1rem = 기본 16px.
    설정 > 글자 크기에서 html 의 font-size 를 바꾸면 화면 전체가 같이 커지고 작아집니다. */
 :root {
-  /* C 스타일: 밝은 회색 바탕 + 큰 흰 카드 + 진한 초록 포인트 */
-  --primary: #08875a;      /* 흰 글씨 대비 4.5:1 이상 */
-  --primary-2: #066e49;
-  --primary-soft: #e3f6ec;
-  --accent: #18c37e;       /* 진행률 원 등 장식용 밝은 초록 */
-  --bg: #f4f5f7;
+  /* 토스풍: 밝은 회색 바탕 + 큰 흰 카드 + 파랑 포인트 */
+  --primary: #1f6fe5;      /* 토스풍 파랑: 흰 글씨 대비 4.7:1 */
+  --primary-2: #1b64da;
+  --primary-soft: #e8f3ff;
+  --accent: #3182f6;       /* 진행률 원 등 장식용 밝은 파랑 */
+  --bg: #f2f4f6;
   --card: #ffffff;
   --field: #f2f4f6;
   --line: #eef0f3;
@@ -73,7 +73,7 @@ h1, h2, h3, p { margin: 0; }
 .next {
   position: relative; overflow: hidden;
   margin: 12px 20px 0; padding: 20px; border-radius: var(--r-xl);
-  background: linear-gradient(140deg, #18936b 0%, var(--primary) 45%, var(--primary-2) 100%);
+  background: linear-gradient(140deg, #4c93f8 0%, var(--primary) 45%, var(--primary-2) 100%);
   color: #fff; display: flex; flex-direction: column; gap: 4px; box-shadow: var(--shadow-lg);
 }
 .next::after {
@@ -120,7 +120,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* ───── 알림 ───── */
 .alarm {
-  flex: 1; background: radial-gradient(120% 70% at 50% 0%, #1fa077 0%, var(--primary) 45%, var(--primary-2) 100%);
+  flex: 1; background: radial-gradient(120% 70% at 50% 0%, #4c93f8 0%, var(--primary) 45%, var(--primary-2) 100%);
   color: #fff; padding: 32px 20px 28px; display: flex; flex-direction: column;
 }
 .alarm .chip {
@@ -209,7 +209,7 @@ h1, h2, h3, p { margin: 0; }
 /* ───── 시작 화면 ───── */
 .auth { background: linear-gradient(180deg, var(--primary-soft) 0%, var(--bg) 42%); }
 .auth .brand { padding: 56px 20px 8px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.auth .logo { width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(140deg, #1fa077, var(--primary-2)); display: grid; place-items: center; margin-bottom: 14px; box-shadow: var(--shadow-lg); }
+.auth .logo { width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(140deg, #4c93f8, var(--primary-2)); display: grid; place-items: center; margin-bottom: 14px; box-shadow: var(--shadow-lg); }
 .auth .title { font-size: 1.75rem; }
 .auth .form { margin-top: 28px; }
 .auth .field input { background: #fff; border-color: var(--line); }
@@ -250,7 +250,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* ───── 설정 ───── */
 .profile-card { margin: 16px 20px 0; padding: 18px; display: flex; align-items: center; gap: 14px; }
-.profile-card .avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(140deg, #1fa077, var(--primary-2)); color: #fff; display: grid; place-items: center; font-size: 1.25rem; font-weight: 800; }
+.profile-card .avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(140deg, #4c93f8, var(--primary-2)); color: #fff; display: grid; place-items: center; font-size: 1.25rem; font-weight: 800; }
 .profile-card b { display: block; font-size: 1.125rem; font-weight: 700; }
 .profile-card span { font-size: 0.875rem; color: var(--ink-3); }
 .menu-group { margin: 14px 20px 20px; background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow); overflow: hidden; }
@@ -294,7 +294,7 @@ h1, h2, h3, p { margin: 0; }
 .legend i.x { background: var(--warn); }
 .cal-rate { padding: 0 4px; font-size: 0.875rem; color: var(--ink-2); }
 .cal-rate b { color: var(--primary); font-size: 1rem; }
-.summary { margin: 14px 20px 0; padding: 20px; border-radius: var(--r-xl); background: linear-gradient(140deg, #18936b, var(--primary-2)); color: #fff; box-shadow: var(--shadow-lg); }
+.summary { margin: 14px 20px 0; padding: 20px; border-radius: var(--r-xl); background: linear-gradient(140deg, #4c93f8, var(--primary-2)); color: #fff; box-shadow: var(--shadow-lg); }
 .summary .k { font-size: 0.8125rem; opacity: 0.85; }
 .summary .big { display: flex; align-items: baseline; gap: 6px; margin-top: 4px; }
 .summary .big b { font-size: 2.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }

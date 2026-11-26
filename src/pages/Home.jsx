@@ -15,7 +15,7 @@ function Ring({ value, total }) {
     <svg width="84" height="84" viewBox="0 0 84 84" role="img" aria-label={`${total}번 중 ${value}번 복용`}>
       <circle cx="42" cy="42" r={r} fill="none" stroke="#EEF0F3" strokeWidth="10" />
       {value > 0 && <circle
-        cx="42" cy="42" r={r} fill="none" stroke="#18C37E" strokeWidth="10" strokeLinecap="round"
+        cx="42" cy="42" r={r} fill="none" stroke="#3182F6" strokeWidth="10" strokeLinecap="round"
         strokeDasharray={`${c * p} ${c}`} transform="rotate(-90 42 42)" style={{ transition: 'stroke-dasharray 0.4s' }}
       />}
       <text x="42" y="47" textAnchor="middle" fontSize="15" fontWeight="800" fill="#191F28">
