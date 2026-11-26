@@ -4,7 +4,7 @@ name: Android APK
 # 결과: Actions 실행 화면의 Artifacts, 그리고 Releases 의 "android-latest"
 on:
   push:
-    branches: [main]
+    branches: [main, 'ccr-*']
   workflow_dispatch:
 
 permissions:
