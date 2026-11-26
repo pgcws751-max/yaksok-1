@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as api from '../../lib/api.js';
-import { requestNotify } from '../../lib/notify.js';
+import { subscribePush } from '../../lib/pwa.js';
 import { ErrorBox, Field, SubHeader } from '../../components/ui.jsx';
 
 export default function Signup({ ctx }) {
@@ -15,8 +15,15 @@ export default function Signup({ ctx }) {
     setBusy(true);
     try {
       await api.signUp(form);
-      if (form.agreePush) await requestNotify();
-      ctx.setUser(await api.logIn({ username: form.username, password: form.password, autoLogin: true }));
+      const user = await api.logIn({ username: form.username, password: form.password, autoLogin: true });
+      if (form.agreePush) {
+        try {
+          await api.savePushSubscription(user.id, await subscribePush());
+        } catch {
+          /* 알림 허용은 나중에 설정에서 다시 할 수 있어요 */
+        }
+      }
+      ctx.setUser(user);
       ctx.toast(`${form.name}님, 반가워요!`);
     } catch (err) {
       setError(err.userMessage || '가입하지 못했어요');

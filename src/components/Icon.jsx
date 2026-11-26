@@ -50,6 +50,12 @@ const PATHS = {
   chevron: <path d="M9 5l7 7-7 7" />,
   text: <path d="M4 7V5h10v2M9 5v14M7 19h4M14 12v-1h6v1M17 11v8M15.5 19h3" />,
   close: <path d="M6 6l12 12M18 6L6 18" />,
+  download: (
+    <>
+      <path d="M12 4v11M7 10l5 5 5-5" />
+      <path d="M5 19h14" />
+    </>
+  ),
   gear: (
     <>
       <circle cx="12" cy="12" r="3.2" />

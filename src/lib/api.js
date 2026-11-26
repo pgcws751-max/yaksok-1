@@ -50,3 +50,8 @@ export async function withdraw(...a) {
 }
 export const loadData = (...a) => be().loadData(...a);
 export const syncData = (...a) => be().syncData(...a);
+
+// 웹 푸시: 체험 모드는 서버가 없으므로 지원하지 않아요
+export const savePushSubscription = (...a) => (isDemo() ? Promise.resolve() : remote.savePushSubscription(...a));
+export const deletePushSubscription = (...a) => (isDemo() ? Promise.resolve() : remote.deletePushSubscription(...a));
+export const snoozeRemote = (...a) => (isDemo() ? Promise.resolve() : remote.snoozeRemote(...a));

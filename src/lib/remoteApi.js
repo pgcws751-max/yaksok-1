@@ -8,6 +8,7 @@ import { FunctionsHttpError } from '@supabase/supabase-js';
 import { supabase as sb, SUPABASE_KEY, SUPABASE_URL, cleanAuthParams } from './supabase.js';
 import { load, save } from './storage.js';
 import { addDays, dateKey } from './date.js';
+import { currentSubscription } from './pwa.js';
 
 export const DEFAULT_SETTINGS = { notify: true, remind: true, remindMinutes: 10 };
 const ID_DOMAIN = 'id.yaksok.app'; // 아이디를 Supabase 계정(이메일 형식)에 연결할 때 쓰는 내부 주소
@@ -73,6 +74,14 @@ export async function logIn({ username, password, autoLogin }) {
 
 export async function logOut() {
   save(NO_AUTO, undefined);
+  // 이 기기로 오던 복용 알림을 끊습니다 (다른 사람이 로그인해도 내 알림이 오지 않게)
+  try {
+    const sub = await currentSubscription();
+    if (sub) await sb.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
+  } catch {
+    /* 무시 */
+  }
+  save('yaksok:pushOn', undefined);
   await sb.auth.signOut();
 }
 
@@ -275,4 +284,25 @@ async function pushChanges(userId, prev, next) {
       await sb.from('settings').upsert({ user_id: userId, notify: s.notify, remind: s.remind, remind_minutes: s.remindMinutes }),
     );
   }
+}
+
+// ───── 앱이 닫혀 있어도 오는 알림 (웹 푸시) ─────
+
+export async function savePushSubscription(userId, sub) {
+  const j = sub.toJSON();
+  const { error } = await sb.from('push_subscriptions').upsert(
+    { user_id: userId, endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, user_agent: navigator.userAgent.slice(0, 200) },
+    { onConflict: 'endpoint' },
+  );
+  if (error) fail('알림 등록을 저장하지 못했어요');
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Seoul';
+  await sb.from('settings').update({ tz }).eq('user_id', userId);
+}
+
+export async function deletePushSubscription(endpoint) {
+  if (endpoint) await sb.from('push_subscriptions').delete().eq('endpoint', endpoint);
+}
+
+export async function snoozeRemote(userId, day, minutes, fireAt) {
+  await sb.from('push_snoozes').upsert({ user_id: userId, day, minutes, fire_at: fireAt.toISOString() });
 }

@@ -3,7 +3,7 @@ import { DialogHost } from './components/Dialog.jsx';
 import * as api from './lib/api.js';
 import { dateKey, nowMinutes } from './lib/date.js';
 import { slotsOn } from './lib/schedule.js';
-import { canNotify, showNotification } from './lib/notify.js';
+import { currentSubscription, pushWanted, showLocalNotification } from './lib/pwa.js';
 import { formatTime } from './time.js';
 import { match, navigate, useRoute } from './router.js';
 
@@ -25,6 +25,7 @@ import NotifySettings from './pages/settings/NotifySettings.jsx';
 import Profile from './pages/settings/Profile.jsx';
 import Account from './pages/settings/Account.jsx';
 import Display from './pages/settings/Display.jsx';
+import Install from './pages/settings/Install.jsx';
 
 const AUTH_PATHS = ['/intro', '/login', '/signup', '/find-id', '/find-password'];
 
@@ -143,7 +144,15 @@ export default function App() {
     [today, update],
   );
 
+  // 이 기기에서 서버 푸시를 받기로 했다면, 구독 정보를 서버에 다시 맞춰 둡니다.
+  const pushOn = !!user && user.provider !== 'demo' && pushWanted();
+  useEffect(() => {
+    if (!pushOn || !data || typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+    currentSubscription().then((sub) => sub && api.savePushSubscription(user.id, sub).catch(() => {}));
+  }, [pushOn, user?.id, !!data]);
+
   // ───── 복용 알림: 앱이 열려 있는 동안 1분마다 확인 ─────
+  // (서버 푸시를 켠 기기는 푸시가 알림을 띄우므로, 여기서는 알림 화면만 엽니다)
   const fired = useRef(new Set());
   const [snoozeAt, setSnoozeAt] = useState(null); // { minutes, at }
   useEffect(() => {
@@ -154,11 +163,11 @@ export default function App() {
       if (fired.current.has(id)) return;
       fired.current.add(id);
       const names = slot.items.filter((i) => !i.taken).map((i) => i.med.name).join(', ');
-      if (canNotify()) {
-        showNotification(`${slot.label} 약 드실 시간이에요${again ? ' (다시 알림)' : ''}`, {
+      if (!pushOn) {
+        showLocalNotification(`${slot.label} 약 드실 시간이에요${again ? ' (다시 알림)' : ''}`, {
           body: `${formatTime(slot.minutes)} · ${names}`,
-          tag: id,
-          onClick: () => navigate(`/alarm/${slot.minutes}`),
+          tag: `yaksok-${today}-${slot.minutes}`,
+          data: { url: `${window.location.origin}${window.location.pathname}#/alarm/${slot.minutes}` },
         });
       }
       if (!path.startsWith('/alarm')) navigate(`/alarm/${slot.minutes}`);
@@ -172,7 +181,7 @@ export default function App() {
         fire(s, `snooze${snoozeAt.at}`, true);
       }
     });
-  }, [now, today, user, data, snoozeAt, path]);
+  }, [now, today, user, data, snoozeAt, path, pushOn]);
 
   if (user && loadError) {
     return (
@@ -212,6 +221,7 @@ export default function App() {
     snooze: (minutes) => {
       const mins = data.settings.remindMinutes || 10;
       setSnoozeAt({ minutes, at: now + mins });
+      if (pushOn) api.snoozeRemote(user.id, today, minutes, new Date(Date.now() + mins * 60000)).catch(() => {});
       setToast(`${mins}분 뒤에 다시 알려드릴게요`);
     },
   };
@@ -236,6 +246,7 @@ export default function App() {
   else if (path === '/settings/profile') page = <Profile ctx={ctx} />;
   else if (path === '/settings/account') page = <Account ctx={ctx} />;
   else if (path === '/settings/display') page = <Display ctx={ctx} />;
+  else if (path === '/settings/install') page = <Install ctx={ctx} />;
   else page = <Home ctx={ctx} />;
 
   return (
