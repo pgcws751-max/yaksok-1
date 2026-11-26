@@ -42,7 +42,10 @@ async function callAccount(body) {
 }
 
 async function profileOf(user) {
-  const { data: p } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  const [{ data: p }, { data: admin }] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', user.id).maybeSingle(),
+    sb.rpc('is_admin'),
+  ]);
   const meta = user.user_metadata || {};
   return {
     id: user.id,
@@ -51,6 +54,7 @@ async function profileOf(user) {
     phone: p?.phone || '',
     provider: user.app_metadata?.provider || 'email',
     createdAt: p?.created_at || user.created_at,
+    isAdmin: admin === true,
   };
 }
 
@@ -306,3 +310,15 @@ export async function deletePushSubscription(endpoint) {
 export async function snoozeRemote(userId, day, minutes, fireAt) {
   await sb.from('push_snoozes').upsert({ user_id: userId, day, minutes, fire_at: fireAt.toISOString() });
 }
+
+// ───── 관리자 (서버에서 관리자인지 다시 확인합니다) ─────
+
+async function adminRpc(name, args) {
+  const { data, error } = await sb.rpc(name, args);
+  if (error) fail(/forbidden/.test(error.message) ? '관리자만 볼 수 있어요' : '불러오지 못했어요. 인터넷 연결을 확인해 주세요');
+  return data;
+}
+export const adminStats = () => adminRpc('admin_stats');
+export const adminUsers = () => adminRpc('admin_users');
+export const adminUserDetail = (id) => adminRpc('admin_user_detail', { p_user: id });
+export const adminAuditLog = () => adminRpc('admin_audit_log', { p_limit: 100 });

@@ -55,3 +55,9 @@ export const syncData = (...a) => be().syncData(...a);
 export const savePushSubscription = (...a) => (isDemo() ? Promise.resolve() : remote.savePushSubscription(...a));
 export const deletePushSubscription = (...a) => (isDemo() ? Promise.resolve() : remote.deletePushSubscription(...a));
 export const snoozeRemote = (...a) => (isDemo() ? Promise.resolve() : remote.snoozeRemote(...a));
+
+// 관리자 기능은 실제 회원(Supabase)만
+export const adminStats = () => remote.adminStats();
+export const adminUsers = () => remote.adminUsers();
+export const adminUserDetail = (id) => remote.adminUserDetail(id);
+export const adminAuditLog = () => remote.adminAuditLog();

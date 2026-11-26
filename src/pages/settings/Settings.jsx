@@ -24,6 +24,12 @@ export default function Settings({ ctx }) {
         </div>
       </section>
 
+      {user.isAdmin && (
+        <div className="menu-group" style={{ marginBottom: 0 }}>
+          <MenuRow icon="chart" title="관리자 화면" desc="대시보드 · 회원 · 열람 기록" onClick={() => navigate('/admin')} />
+        </div>
+      )}
+
       <div className="menu-group">
         <MenuRow
           icon="bell"
