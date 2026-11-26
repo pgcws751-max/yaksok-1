@@ -7,8 +7,9 @@ android {
         applicationId "com.pgcws751.yaksok"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // GitHub Actions 빌드 번호로 버전을 올립니다 (없으면 1)
+        versionCode((project.findProperty('versionCode') ?: '1') as Integer)
+        versionName "1.0.${project.findProperty('versionCode') ?: '1'}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,7 +17,20 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // 시험용 APK는 항상 같은 키로 서명해서, 새 버전을 지우지 않고 덮어 설치할 수 있게 합니다.
+    // (출시용 키는 따로 만들어 저장소 밖에 보관해야 해요)
+    signingConfigs {
+        debug {
+            storeFile file('yaksok-debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
