@@ -43,7 +43,7 @@ jobs:
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace -PversionCode=${{ github.run_number }}
           cp app/build/outputs/apk/debug/app-debug.apk ../yaksok-debug.apk
 
       - uses: actions/upload-artifact@v4
@@ -63,5 +63,5 @@ jobs:
           body: |
             시험용(debug) APK입니다. 휴대폰에서 내려받아 설치하세요.
             설치할 때 "출처를 알 수 없는 앱 설치"를 한 번 허용해야 해요.
-            빌드 커밋: ${{ github.sha }}
+            버전: 1.0.${{ github.run_number }} · 빌드 커밋: ${{ github.sha }}
           files: yaksok-debug.apk
