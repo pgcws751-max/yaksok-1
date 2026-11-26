@@ -5,6 +5,7 @@ const TABS = [
   { id: 'home', path: '/home', label: '홈', icon: 'home' },
   { id: 'meds', path: '/meds', label: '약 관리', icon: 'pill' },
   { id: 'history', path: '/history', label: '복용이력', icon: 'calendar' },
+  { id: 'chat', path: '/chat', label: 'AI 상담', icon: 'chat' },
   { id: 'settings', path: '/settings', label: '설정', icon: 'gear' },
 ];
 
