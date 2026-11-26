@@ -468,6 +468,27 @@ h1, h2, h3, p { margin: 0; }
 .ia-stats small { font-size: 0.75rem; color: var(--ink-3); }
 .ia-stats b { font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; }
 
+/* ───── 알림 설정 · 설치 ───── */
+.push-card { margin: 16px 20px 0; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.push-head { display: flex; align-items: center; gap: 12px; }
+.push-ic { width: 44px; height: 44px; border-radius: 14px; background: var(--field); color: var(--ink-3); display: grid; place-items: center; flex: none; }
+.push-ic.on { background: var(--primary-soft); color: var(--primary); }
+.push-txt { display: flex; flex-direction: column; gap: 1px; }
+.push-txt b { font-size: 1.0625rem; font-weight: 800; }
+.push-txt span { font-size: 0.8125rem; color: var(--ink-3); font-weight: 600; }
+.push-actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
+.push-actions .btn-soft { height: 3.25rem; }
+.install-card { margin: 16px 20px 0; padding: 18px; display: flex; align-items: center; gap: 14px; }
+.install-card img { border-radius: 16px; }
+.install-card b { display: block; font-size: 1.125rem; font-weight: 800; }
+.install-card span { font-size: 0.875rem; color: var(--ink-3); }
+.steps-card { margin: 12px 20px 24px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.steps-card h2 { font-size: 1rem; font-weight: 800; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
+.step-n { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 0.8125rem; font-weight: 800; display: grid; place-items: center; flex: none; margin-top: 1px; }
+.step b { color: var(--ink); }
+
 /* ───── 하단 메뉴 ───── */
 .tabbar {
   position: sticky; bottom: 0; margin-top: auto; z-index: 5;

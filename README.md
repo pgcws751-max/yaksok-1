@@ -64,8 +64,14 @@ src/
   pages/               화면들
 ```
 
+## 앱 설치 · 앱이 닫혀 있어도 오는 알림
+
+- `public/manifest.webmanifest`, 아이콘, `public/sw.js`(화면 저장 + 푸시 표시)로 홈 화면에 설치할 수 있어요.
+- 알림 흐름: Supabase `pg_cron`이 1분마다 `send-reminders` 함수를 부름 → `claim_due_reminders()`가 지금 보낼 알림(정시 · 다시 알림 · 10분 뒤)을 찾고 중복을 막음 → 웹 푸시 전송.
+- 테이블: `push_subscriptions`(기기별 구독), `push_snoozes`(10분 뒤 다시), `push_sent`(보낸 기록, 3일 보관). 푸시 키는 Supabase Vault에 보관.
+- 아이폰은 홈 화면에 추가한 앱에서만 푸시를 받을 수 있어요(iOS 16.4 이상).
+
 ## 남은 할 일
 
 - 카카오·구글 로그인: Supabase 대시보드에서 각 제공자를 켜고 키 입력, Redirect URL 등록
-- 알림은 앱이 열려 있을 때만 울려요. 닫혀 있어도 오는 푸시는 웹 푸시(서비스 워커 + 서버 함수)가 필요해요.
 - 아이디·비밀번호 찾기는 이름 + 연락처로 확인해요. 더 안전하게 하려면 문자 인증을 붙여야 해요.
