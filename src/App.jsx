@@ -19,6 +19,7 @@ import Home from './pages/Home.jsx';
 import Alarm from './pages/Alarm.jsx';
 import MedList from './pages/meds/MedList.jsx';
 import MedEdit from './pages/meds/MedEdit.jsx';
+import MedWizard from './pages/meds/MedWizard.jsx';
 import MedTimes from './pages/meds/MedTimes.jsx';
 import History from './pages/History.jsx';
 import Settings from './pages/settings/Settings.jsx';
@@ -271,7 +272,7 @@ export default function App() {
   } else if (path === '/home') page = <Home ctx={ctx} />;
   else if ((params = match('/alarm/:minutes', path))) page = <Alarm ctx={ctx} minutes={Number(params.minutes)} />;
   else if (path === '/meds') page = <MedList ctx={ctx} />;
-  else if (path === '/meds/new') page = <MedEdit ctx={ctx} />;
+  else if (path === '/meds/new') page = <MedWizard ctx={ctx} />;
   else if ((params = match('/meds/:id/times', path))) page = <MedTimes key={params.id} ctx={ctx} id={params.id} />;
   else if ((params = match('/meds/:id', path))) page = <MedEdit key={params.id} ctx={ctx} id={params.id} />;
   else if (path === '/history') page = <History ctx={ctx} />;

@@ -701,3 +701,55 @@ td.adm-empty { display: table-cell; }
 .voice-bars i { width: 5px; height: 10px; border-radius: 3px; background: var(--accent); animation: voice-bar 0.9s ease-in-out infinite; }
 @keyframes voice-bar { 0%, 100% { height: 8px; } 50% { height: 34px; } }
 .voice-cancel { margin-top: 18px; height: 48px; padding: 0 28px; }
+
+.voice-actions { display: flex; gap: 8px; margin-top: 18px; }
+.voice-actions .voice-cancel { margin-top: 0; width: auto; padding: 0 24px; }
+
+/* ───── 약 등록 (고르기 + 말하기) ───── */
+.wiz-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 8px; }
+.wiz-count { font-size: 0.875rem; font-weight: 700; color: var(--ink-3); }
+.wiz-bar { margin: 0 20px; height: 6px; border-radius: 99px; background: #e5e8eb; overflow: hidden; }
+.wiz-bar span { display: block; height: 100%; background: var(--primary); border-radius: 99px; transition: width 0.25s; }
+.wiz-body { padding: 20px 20px 24px; display: flex; flex-direction: column; }
+.wiz-q { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.35; }
+.wiz-q2 { margin-top: 26px; margin-bottom: 10px; font-size: 1.125rem; font-weight: 800; }
+.wiz-qrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.wiz-sub { margin-top: 10px; font-size: 0.9375rem; color: var(--ink-3); line-height: 1.5; white-space: pre-line; }
+.wiz-mic { flex: none; height: 40px; padding: 0 14px; border: none; border-radius: 99px; background: var(--primary-soft); color: var(--primary); font-size: 0.875rem; font-weight: 800; display: flex; align-items: center; gap: 4px; }
+.wiz-voice-all { margin-top: 18px; width: 100%; padding: 18px; border: none; border-radius: 22px; background: var(--card); display: flex; align-items: center; gap: 14px; text-align: left; font: inherit; color: var(--ink); box-shadow: inset 0 0 0 2px var(--primary-soft); }
+.wiz-voice-all .core { width: 60px; height: 60px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; flex: none; box-shadow: 0 6px 16px rgba(31, 111, 229, 0.3); }
+.wiz-voice-all b { display: block; font-size: 1.125rem; font-weight: 800; }
+.wiz-voice-all small { display: block; margin-top: 2px; font-size: 0.8125rem; color: var(--ink-3); line-height: 1.4; }
+.wiz-or { margin: 20px 0 10px; font-size: 0.875rem; font-weight: 700; color: var(--ink-3); }
+.wiz-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-opt.big { height: 2.75rem; padding: 0 16px; font-size: 1rem; }
+.wiz-slots { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wiz-slot { border-radius: 20px; background: var(--card); overflow: hidden; box-shadow: inset 0 0 0 2px transparent; }
+.wiz-slot.is-on { background: var(--primary); }
+.wiz-slot-btn { position: relative; width: 100%; min-height: 120px; padding: 16px 14px; border: none; background: none; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; font: inherit; color: var(--ink); text-align: left; }
+.wiz-slot-btn b { margin-top: 6px; font-size: 1.25rem; font-weight: 900; }
+.wiz-slot-btn > span:not(.wiz-check) { font-size: 0.875rem; color: var(--ink-3); font-weight: 600; }
+.wiz-slot.is-on .wiz-slot-btn, .wiz-slot.is-on .wiz-slot-btn > span { color: #fff; }
+.wiz-check { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink-4); display: grid; place-items: center; }
+.wiz-slot.is-on .wiz-check { border: none; background: #fff; color: var(--primary); }
+.wiz-time { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 10px; color: rgba(255, 255, 255, 0.9); font-size: 0.75rem; font-weight: 700; }
+.wiz-time button { width: 36px; height: 36px; border: none; border-radius: 50%; background: rgba(255, 255, 255, 0.2); color: #fff; display: grid; place-items: center; }
+.wiz-grid3 { margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.wiz-q2 + .wiz-grid3 { margin-top: 0; }
+.wiz-tile { position: relative; min-height: 64px; padding: 8px 6px; border: none; border-radius: 16px; background: var(--card); color: var(--ink); font: inherit; font-size: 1.0625rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; cursor: pointer; overflow: hidden; }
+.wiz-tile.tall { min-height: 80px; }
+.wiz-tile small { font-size: 0.75rem; font-weight: 500; color: var(--ink-3); }
+.wiz-tile.is-on { background: var(--primary); color: #fff; }
+.wiz-tile.is-on small { color: rgba(255, 255, 255, 0.85); }
+.wiz-tile.date { font-size: 0.875rem; }
+.wiz-tile.date input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.wiz-tile:focus-within { outline: 3px solid #f2b705; outline-offset: 2px; }
+.wiz-summary { margin-top: 16px; padding: 6px 18px; }
+.wiz-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.wiz-row:last-child { border-bottom: none; }
+.wiz-row > span { width: 64px; flex: none; font-size: 0.875rem; color: var(--ink-3); padding-top: 2px; }
+.wiz-row b { flex: 1; font-size: 1rem; font-weight: 700; line-height: 1.5; white-space: pre-line; }
+.wiz-row .chip-btn { margin-left: 0; height: 32px; font-size: 0.8125rem; }
+.wiz-foot { position: sticky; bottom: 0; margin-top: auto; padding: 12px 20px calc(16px + env(safe-area-inset-bottom)); background: var(--bg); }
+.wiz-foot .btn-primary { height: 3.5rem; font-size: 1.125rem; }
+.wiz-q, .wiz-row b, .wiz-sub, .wiz-voice-all small { word-break: keep-all; }
