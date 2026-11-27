@@ -16,7 +16,7 @@ export default function VoiceOverlay({ onDone, onCancel, samples, hint = '예: "
     listen({ onText: setHeard, signal: ac.signal, samples }).then((r) => {
       if (ac.signal.aborted || r == null) return;
       if (typeof r === 'object') {
-        setPhase(r.error === 'denied' ? 'denied' : 'error');
+        setPhase(r.error === 'denied' ? 'denied' : r.error === 'unavailable' ? 'unavailable' : 'error');
         return;
       }
       setHeard(r);
@@ -35,7 +35,8 @@ export default function VoiceOverlay({ onDone, onCancel, samples, hint = '예: "
     listening: heard ? '듣고 있어요…' : title || '말씀해 주세요',
     done: '이렇게 들었어요',
     error: '잘 못 들었어요. 다시 말씀해 주세요',
-    denied: '마이크 사용이 막혀 있어요. 브라우저 설정에서 마이크를 허용해 주세요',
+    denied: '마이크 사용이 막혀 있어요. 설정에서 마이크를 허용해 주세요',
+    unavailable: '이 휴대폰에서는 음성 인식을 쓸 수 없어요. Google 앱(음성 검색)이 설치되어 있는지 확인해 주세요',
   }[phase];
 
   return (
@@ -60,7 +61,7 @@ export default function VoiceOverlay({ onDone, onCancel, samples, hint = '예: "
         <div style={{ height: 36 }} />
       )}
       <div className="voice-actions">
-        {(phase === 'error' || phase === 'denied') && (
+        {(phase === 'error' || phase === 'denied' || phase === 'unavailable') && (
           <button type="button" className="btn-primary voice-cancel" onClick={() => setRound((n) => n + 1)}>
             다시 말하기
           </button>

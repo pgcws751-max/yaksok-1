@@ -11,6 +11,7 @@
     "android:sync": "npm run build:app && npx cap sync android"
   },
   "dependencies": {
+    "@capacitor-community/speech-recognition": "^7.0.1",
     "@capacitor/android": "^7.6.11",
     "@capacitor/app": "^7.1.2",
     "@capacitor/core": "^7.6.11",
