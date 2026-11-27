@@ -6,7 +6,8 @@ import { GREETING, SERVICES, SUGGESTIONS, getReply } from '../lib/chatbot.js';
 import { phoneText } from '../lib/contacts.js';
 import { load, save } from '../lib/storage.js';
 import { navigate } from '../router.js';
-import { canSpeak, listen, speak, stopSpeaking } from '../lib/voice.js';
+import { canSpeak, speak, stopSpeaking } from '../lib/voice.js';
+import VoiceOverlay from '../components/VoiceOverlay.jsx';
 
 const KEY = 'yaksok:chat2';
 
@@ -167,47 +168,6 @@ function Card({ card, send, disabled }) {
     );
   }
   return null;
-}
-
-function VoiceOverlay({ onDone, onCancel }) {
-  const [heard, setHeard] = useState('');
-  const [phase, setPhase] = useState('listening'); // listening | done
-  useEffect(() => {
-    const ac = new AbortController();
-    listen({ onText: setHeard, signal: ac.signal }).then((phrase) => {
-      if (!phrase) return;
-      setPhase('done');
-      setTimeout(() => !ac.signal.aborted && onDone(phrase), 500);
-    });
-    const onKey = (e) => e.key === 'Escape' && onCancel();
-    document.addEventListener('keydown', onKey);
-    return () => {
-      ac.abort();
-      document.removeEventListener('keydown', onKey);
-    };
-  }, []);
-  return (
-    <div className="voice" role="dialog" aria-modal="true" aria-label="음성으로 말하기">
-      <span className="badge wait voice-badge">샘플 · 음성 인식 연결 전</span>
-      <p className="voice-state">{phase === 'done' ? '이렇게 들었어요' : heard ? '듣고 있어요…' : '말씀해 주세요'}</p>
-      <p className="voice-text" aria-live="polite">{heard || '예: "딸에게 전화해줘"'}</p>
-      <div className={`voice-mic ${phase}`}>
-        <span className="ring r1" />
-        <span className="ring r2" />
-        <span className="core">
-          <Icon name="mic" size={40} color="#fff" strokeWidth={2.2} />
-        </span>
-      </div>
-      <div className="voice-bars" aria-hidden="true">
-        {Array.from({ length: 9 }, (_, i) => (
-          <i key={i} style={{ animationDelay: `${(i % 5) * 0.12}s` }} />
-        ))}
-      </div>
-      <button type="button" className="btn-soft voice-cancel" onClick={onCancel}>
-        그만하기
-      </button>
-    </div>
-  );
 }
 
 function SpeakButton({ text }) {
